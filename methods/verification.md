@@ -72,3 +72,28 @@ Confirmed with a caveat worth carrying: C1 (mapped basis), C3 (sum of annual sha
 - C18 vs health files: values match modelled_acute_deaths_national.csv and losses/human_cost_2023_2026.csv.
 - C19 and C20: C19's double count carries into C20 and into losses/results.md (record year and 4-year total).
 - C23 vs losses: losses/human_cost_2023_2026.csv has an older uncalibrated 2026 building estimate (146) that conflicts with property's 517.
+
+## Second check: the slides and the page (2026-10-23)
+
+An independent reader checked every number on the nine slides, the page's chapters and the post text against the analysis files, without editing them.
+
+**Confirmed:** slide 2 (35.9 M ha; more than double any four years, 2.04 times); slide 3 (1 in 3 hectares, 34.7%); slide 4 (32 million people, 1.1 million asthma symptom days); slide 6 (15 months, 15.2); slide 7 (the other budget percentages, 70 years, 4,231); slide 8 ($1.02 B, $124 M, 53 projects); chapter 4 identical to slide 5; the 2026 cost estimates correctly added to the government forecasts; no em dashes, no Claude mention, no modelled deaths, no number from news, no repeated statistic.
+
+| Finding | Fix |
+|---|---|
+| The value of standing timber burned ($13.0 B at Crown cutting fees) was half of the cost total; economic-value/results.md calls it a valuation, not a loss | Moved out of the total; shown on the page as a reference line |
+| Indigenous Services Canada's on-reserve estimate was inside the "at least" total, though the notes say it partly repays provincial evacuation costs already counted | Moved out of the total as a reference line ($0.79 to $1.49 B) |
+| Parks Canada 2024: $7.7 M of other fire pressures was in the $59.8 M row and added again | Counted once (the residual is zero in the floor) |
+| Buildings were valued at average census home values while the footnote said "low end" | Median values in the floor, average as the high end |
+| Last slide: "7 in 10 hectares burned in remote fires that grew fast" mixed two statistics, and "spot fires early" contradicts analysis/response (late detection explains little) | "In 2026, 7 in 10 hectares burned in fires that grew past 1,000 hectares within three days"; the call for early detection dropped |
+| Slide 6: 870 Mt is CO2-equivalent, not CO2, and the year was missing | "2023 fires: 15 months of Canada's emissions ... greenhouse gases" |
+| Slide 7: Alberta 18% (169.2 / 912.6 = 18.54%, rounded twice) | 19% (half-up rounding) |
+| Slide 3: "driest four years since 1950" holds for April to September only | "driest four fire seasons since 1950" |
+
+**Wording changed after the check:** the temperature states its years and baseline (summers 2023 to 2026, 1.5 °C above 1961 to 1990); "linked to" instead of "came from" the warming; firefighting "nearly doubled" against 2016 to 2021, because 2022 has no Alberta figure; the readiness headline keeps its subject and the closing calls are attributed to auditors and fire reviews; "at least $124 million paid", because the satellite's spending is unknown.
+
+**After the check (2026-10-23):**
+- A quality screen on 2026 building flags (property/results.md) removes 29 of 517; C23's 2026 value is 488.
+- The per-monitor smoke-day counts behind the slide 4 map counted two readings of the same day at many monitors; one reading per monitor and day is kept now (METHODOLOGY.md section 5.9). Slide 4 was rebuilt.
+- The cost floor after these fixes, $12.63 B (at least $3 billion a year), was recomputed by the scripts and has not had a second independent read.
+

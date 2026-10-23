@@ -5,19 +5,20 @@ Published with GitHub Pages at https://sjvadrevu.github.io/canada-wildfires-2026
 
 Everything behind the page is here: every analysis script, every output table, the independent check of every published number, and the steps to rebuild it from the official sources. Nothing is hidden, so anyone can reproduce or challenge any number.
 
-- **[METHODOLOGY.md](METHODOLOGY.md):** what we measured and how, a table mapping every published claim (C1 to C40) to the script and file it comes from, and how to challenge a number.
+- **[METHODOLOGY.md](METHODOLOGY.md):** what was measured and how, a table of every number on the slides and in the chapter headlines with how it is computed, a table mapping the verified claims (C1 to C40) to the script and file each comes from, and how to challenge a number.
 - **[REPRODUCE.md](REPRODUCE.md):** environment, download, run order and runtimes.
 - **[data/SOURCES.md](data/SOURCES.md):** every dataset with publisher, URL, licence, access date and use.
-- **[methods/verification.md](methods/verification.md):** the independent verification of every claim.
+- **[methods/verification.md](methods/verification.md):** the two independent checks: every claim (October 22) and every number on the slides and the page (October 23), with each finding and its fix.
 
 ## What the site shows
 
-- **The story, in eight chapters:** what burned (a Germany-sized area), why (hotter, drier summers), who it hurt (smoke, with Health Canada's health estimates), what it cost (a bill built from every public record, line by line), what it did to the climate, whether provinces are ready for another season like these (budgets, aircraft, crews and reviews for every province and territory), what is on the way (new aircraft, a satellite, research under way), and what needs to change.
+- **The story, in eight chapters:** what burned (a Germany-sized area), why (hotter, drier summers), who it hurt (smoke, with Health Canada's health estimates), what it cost (at least $3 billion a year, built line by line from every public record), what it did to the climate, whether provinces are ready for seasons like these (budgets, aircraft, crews and reviews for every province and territory), what is on the way (new aircraft, a satellite, research under way), and what auditors and fire reviews call for.
+- **Explorable chapter graphics:** pick a year on the fire and smoke maps, tap a named fire or an air monitor, pick a year in the heat and drought charts, switch the cost between per year, per Canadian and the four years and open each line, and open the review findings behind each call, by government, with links.
 - **Fire area map:** all 186 fire management areas, coloured by the share of forest burned compared with each area's own 1991 to 2020 average, for 2023, 2024, 2025, 2026 or 2023 to 2026.
 - **Season replay:** weekly 2026 satellite fire detections, with fire outlines appearing in the week they were first seen.
 - **Largest and closest fires:** the ten largest fires of 2023 to 2026 and the ten with the most buildings nearby, on a map.
 - **Province readiness:** spending against budget for each province, with aircraft, crews, reviews and the gaps on record, each linked to its source.
-- **Research under way:** a searchable list of the federal wildfire research projects active now.
+- **Research under way:** a searchable list of the federal wildfire research projects active after October 22, 2026.
 - **Find your city:** for 1,031 places, the nearest 2026 wildfire, smoky days in the fire season (May to November) from 2018 to 2026, and the province's firefighting cost per resident where one is published.
 
 ## Files
@@ -26,15 +27,15 @@ Everything behind the page is here: every analysis script, every output table, t
 |---|---|
 | `index.html` | The page (plain HTML, CSS and JavaScript) |
 | `data/story.json` | Every number in the story and charts, keyed by claim ID |
-| `data/chapters.json` | Chapter numbers shared with the carousel (`scripts/build_chapters.py`), readiness cards, timeline, programs and research list |
-| `data/map/`, `data/cities.json`, `data/smoke2026.json` | Map geometry and attributes, city search table, 2026 smoke calendar |
-| `analysis/<topic>/` | One folder per analysis: `scripts/`, `results.md` (findings and method), `manifest.csv` (sources), output CSVs |
+| `data/chapters.json` | Chapter numbers shared with the carousel (`scripts/build_chapters.py`): cost lines, smoke monitors by year, readiness cards and findings, timeline, programs and research list |
+| `data/map/`, `data/cities.json`, `data/smoke2026.json` | Map geometry and attributes, burned-area images for 2023 to 2026 and each year, city search table, 2026 smoke calendar |
+| `analysis/<topic>/` | One folder per analysis: `scripts/`, `results.md` (findings and method), `manifest.csv` (sources), output CSVs; the cost is in `analysis/costs-full/` |
 | `analysis/REBUILD.md` | The 2026-10-21 rebuild onto the final area layer, with before and after values |
 | `story/` | Draft claims and the verified values (`verified_numbers.json`) |
 | `data/fire/`, `data/geo/`, `data/smoke-cost/` | Derived input tables, dated snapshots of official totals, build scripts and manifests |
 | `season/` | Dated snapshots of official 2026 fire lists and NFD cause tables |
 | `scripts/` | Page build scripts, data download (`download_data.py`), sources table (`build_sources.py`), analysis sync (`sync_analysis.py`) |
-| `slides/` | Carousel builders |
+| `slides/` | Carousel builders (`make_slides_merge.py` builds the nine slides; the stock photos are licensed separately and are not in the repo) |
 | `methods/` | Verification and the list of files kept out of the repo because of size |
 
 ## Licence

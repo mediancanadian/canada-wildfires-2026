@@ -4,15 +4,15 @@ Every number on the page and in the carousel comes from code and outputs in this
 
 - Reproduce: [REPRODUCE.md](REPRODUCE.md). Data sources and licences: [data/SOURCES.md](data/SOURCES.md). Independent check of every claim: [methods/verification.md](methods/verification.md).
 - Files kept out of the repo because of size, with how to regenerate each: [methods/skipped_files.csv](methods/skipped_files.csv).
-- The analysis was run 2026-10-20 to 2026-10-22. Fire data run to 2026-10-20, smoke data to 2026-10-19. 2026 figures are preliminary.
+- The analysis was run 2026-10-20 to 2026-10-23. Fire data run to 2026-10-20, smoke data to 2026-10-19. 2026 figures are preliminary.
 
 ## Contents
 
 1. [Summary](#1-summary)
-2. [Every published claim](#2-every-published-claim)
+2. [Every published claim](#2-every-published-claim): 2.1 the numbers on the slides and in the chapter headlines, 2.2 the verified claims C1 to C40
 3. [How numbers flow to the page](#3-how-numbers-flow-to-the-page)
 4. [Shared building blocks](#4-shared-building-blocks)
-5. Analyses (5.15 readiness, 5.16 government response, 5.17 coverage check, 5.18 the bill, 5.19 page and slides): [forest](#51-forest-area-burned-share-of-forest-ranks-records) · [outline check](#52-outline-check-which-2026-outlines-are-not-wildfires) · [weather](#53-weather-station-fire-weather-2026) · [climate](#54-climate-winter-to-spring-chain) · [climate change](#55-climate-change-warming-drying-and-a-counterfactual) · [cause](#56-cause-ignitions-drought-and-the-expected-vs-actual-model) · [wildlife](#57-wildlife-caribou-ranges-and-protected-areas) · [people](#58-people-who-lived-near-fire-smoke-days-cost-per-resident) · [health](#59-health-smoke-exposure-and-modelled-deaths) · [losses](#510-losses-deaths-evacuations-buildings-payments) · [property](#511-property-buildings-likely-destroyed-and-their-value) · [economy](#512-economy-timber-carbon-jobs-infrastructure-scale) · [economic value](#513-economic-value-what-it-cost) · [threads](#514-threads-emissions-gap-reburns-overwintering-repeat-exposure-prescribed-fire-water)
+5. Analyses (5.15 readiness, 5.16 government response, 5.17 coverage check, 5.18 the cost, 5.19 page and slides): [forest](#51-forest-area-burned-share-of-forest-ranks-records) · [outline check](#52-outline-check-which-2026-outlines-are-not-wildfires) · [weather](#53-weather-station-fire-weather-2026) · [climate](#54-climate-winter-to-spring-chain) · [climate change](#55-climate-change-warming-drying-and-a-counterfactual) · [cause](#56-cause-ignitions-drought-and-the-expected-vs-actual-model) · [wildlife](#57-wildlife-caribou-ranges-and-protected-areas) · [people](#58-people-who-lived-near-fire-smoke-days-cost-per-resident) · [health](#59-health-smoke-exposure-and-modelled-deaths) · [losses](#510-losses-deaths-evacuations-buildings-payments) · [property](#511-property-buildings-likely-destroyed-and-their-value) · [economy](#512-economy-timber-carbon-jobs-infrastructure-scale) · [economic value](#513-economic-value-what-it-cost) · [threads](#514-threads-emissions-gap-reburns-overwintering-repeat-exposure-prescribed-fire-water)
 6. [Independent verification](#6-independent-verification)
 7. [How to challenge a number](#7-how-to-challenge-a-number)
 8. [Things the files do not make clear](#8-things-the-files-do-not-make-clear)
@@ -21,7 +21,7 @@ Every number on the page and in the carousel comes from code and outputs in this
 
 **What we measured.** How much of Canada burned in 2023 to 2026 against every year since 1972, where it burned, what the weather, drought, ignitions and warming looked like, how far the burn went beyond what those drivers predict, who lived near the fires and breathed the smoke, what was destroyed, and what it cost.
 
-**Data.** Raw public data only: NRCan fire perimeters (NBAC 1972 to 2025, CWFIS FireM3 2026 outlines), official agency totals (CWFIF/CIFFC, National Forestry Database), satellite hotspots, Land Cover of Canada 2020, ECCC climate and air-quality stations, AAFC Canadian Drought Monitor, Statistics Canada 2021 Census, Health Canada coefficients, TSB, Public Safety, ISC, provincial public accounts, Copernicus Sentinel-2, Microsoft building footprints, and others (250 rows in [data/SOURCES.md](data/SOURCES.md)). No number comes from news or third-party analysis; industry insured-loss estimates (CatIQ, IBC) are labelled as such.
+**Data.** Raw public data only: NRCan fire perimeters (NBAC 1972 to 2025, CWFIS FireM3 2026 outlines), official agency totals (CWFIF/CIFFC, National Forestry Database), satellite hotspots, Land Cover of Canada 2020, ECCC climate and air-quality stations, AAFC Canadian Drought Monitor, Statistics Canada 2021 Census, Health Canada coefficients, TSB, Public Safety, ISC, provincial public accounts, Copernicus Sentinel-2, Microsoft building footprints, and others (1,227 rows in [data/SOURCES.md](data/SOURCES.md); the page's numbered reference list has 386 entries). No number comes from news or third-party analysis: news was used only to find official documents, and news sites are left out of the reference list. Industry insured-loss estimates (CatIQ, IBC) are labelled as such.
 
 **Main modelling choices.**
 
@@ -34,14 +34,45 @@ Every number on the page and in the carousel comes from code and outputs in this
 | Non-wildfire outlines | A rule fixed before the evidence was computed classes all 718 2026 outlines; 16 are farm/grass or military; 13 unreported ones are dropped from distance analyses |
 | Warming effect | Poisson panel regression of hectares burned on May to August temperature and rain, area fixed effects, 1972 to 2025; counterfactual removes the measured warming |
 | Expected vs actual | Ridge regression on within-area anomalies (drought, fire weather, ignitions, fuel), trained 2003 to 2022 |
-| Smoke | Nearest NAPS/AirNow station within 50 km for every dissemination area and day |
+| Smoke | Nearest NAPS/AirNow station within 50 km for every dissemination area and day. Days of unhealthy smoke at each air monitor: one reading per monitor and day (validated NAPS first, else AirNow real-time), daily mean above 27 ug/m3, May to September |
 | Smoke deaths | Two published coefficients (Health Canada AQBAT 0.7%, Chen et al. 2021 1.9% per 10 ug/m3) applied to the smoke increment; modelled estimates, not counts. **Not shown on the page or the slides** (October 22, 2026): deaths are counted by coroners and no study reports wildfire smoke deaths for 2023 to 2026, so the modelled series is kept in `analysis/health/` for the record only |
-| Emergency room visits | CIHI monthly ED visits (April 2021 to March 2026, 9 provinces and territories) regressed on the monthly smoke increment; extra visits = visits x (1 - 1/exp(beta x increment)), with the 95% interval of beta as the range (`analysis/health/scripts/09_ed_extra_visits.py`) |
+| Health effects | Health Canada's own 2023 estimates (Matz et al. 2026, GeoHealth, Table 1, AQBAT): asthma symptom days in children, restricted activity days, emergency visits and hospital admissions, each with its 95% range |
+| Emergency room visits (not used on the page or slides) | CIHI monthly ED visits (April 2021 to March 2026, 9 provinces and territories) regressed on the monthly smoke increment; extra visits = visits x (1 - 1/exp(beta x increment)), with the 95% interval of beta as the range (`analysis/health/scripts/09_ed_extra_visits.py`) |
 | Readiness | 2026-27 base wildfire budget divided by the mean of 2023-24, 2024-25 and 2025-26 actual spending, from each government's own estimates and public accounts (section 5.15) |
-| Buildings destroyed | Sentinel-2 dNDVI/dNBR rule calibrated on Jasper's official structure layer (precision 0.836, recall 0.832, 5-fold spatial CV) |
-| Money | Provincial public accounts, federal disclosures, industry insured losses, timber at Crown stumpage, modelled deaths at Health Canada's value of a statistical life; kept in separate columns |
+| Buildings destroyed | Sentinel-2 dNDVI/dNBR rule calibrated on Jasper's official structure layer (precision 0.836, recall 0.832, 5-fold spatial CV), then a quality screen on 2026 flags (517 to 488) |
+| Cost | A floor of real costs, 2023 to 2026, in 2025 dollars: official spending in full, every estimate at the low end of its range, each dollar counted once; shown per year (at least $3 billion a year). The value of standing timber burned and Indigenous Services Canada's on-reserve emergency estimate are reference lines outside the total; insured losses and federal disaster payments are not added; modelled deaths are not valued (section 5.18) |
 
 ## 2. Every published claim
+
+### 2.1 Numbers on the slides and in the chapter headlines (October 23, 2026)
+
+The carousel (`slides/make_slides_merge.py`) and the page's chapters (`scripts/build_chapters.py`, which imports the carousel builder and writes `data/chapters.json`) compute these numbers from the files named, at build time; none is typed in. Slide n is chapter n - 1 on the page (slide 1 is the cover). Paths are relative to `analysis/` unless they start with `data/`.
+
+| Slide (chapter) | Number as published | How it is computed | File read |
+|---|---|---|---|
+| 2 (1) | 35.9 million hectares burned | Sum of the fire agencies' official totals, 2023 to 2026 (NFD to 2025, CWFIF 2026 to October 20): 35.91 M ha. Land that burned twice counts twice; distinct land is 35.79 M ha (C4) | data/smoke-cost/fire_area_count_by_agency_year.csv |
+| 2 (1) | About the size of Germany | Germany 35.55 M ha (UN Demographic Yearbook) | graphics/canada_burned_germany_paths.json |
+| 2 (1) | More than double any four years since 1990 | 35.91 / 17.56 (the largest earlier four-year sum, 1993 to 1996) = 2.04 | data/smoke-cost/fire_area_count_by_agency_year.csv |
+| 3 (2) | Summers ran 1.5 °C above 1961 to 1990 | Mean of the May to August temperature anomaly (Canada, forest-weighted) over 2023 to 2026: 1.52 | climate-change/climate_series.csv (scope Canada, variable t_mjja) |
+| 3 (2) | 1 in 3 hectares burned is linked to that heat | 1 / 0.347, the share of the 2023 to 2026 burn attributable to the measured warming (C9) | climate-change/counterfactual_2023_2026.csv |
+| 3 (2) | Driest four fire seasons since 1950 (page: 84% of usual summer rain) | April to September rain, 2023 to 2026 (C10) | climate-change/climate_ranks_2023_2026.csv |
+| 4 (3) | Smoke reached 32 million people | People in dissemination areas whose nearest station within 50 km recorded at least one day with daily PM2.5 above 27 ug/m3, May to September 2023: 32.02 M | health/exposure_by_group.csv (radius 50, May-Sep, national, total_pop, people_ge1day_gt27) |
+| 4 (3) | 1.1 million days of asthma symptoms in children, 2023 | Health Canada's estimate, central value (range 0.24 to 2.0 million) | health/hc_matz2026_2023.csv |
+| 4 (3) | Map of days of unhealthy smoke | Days above 27 ug/m3 at each air monitor, May to September, monitors with at least 100 days of data; one reading per monitor and day (section 5.9) | data/smoke-cost/monitor_unhealthy_days_2023.csv, monitor_unhealthy_days_by_year.csv |
+| 5 (4) | At least $3 billion a year | The cost floor, $12.63 B for 2023 to 2026, divided by 4 ($3.16 B), rounded down to whole billions (section 5.18) | costs-full/bill_summary.json, property/destroyed_value_estimates.csv |
+| 5 (4) | The receipt | Firefighting 2023 to 2025 $8.56 B; firefighting 2026 estimates $1.80 B; homes, buildings and repairs $1.46 B; evacuations and hospital care $0.49 B; lost wages of evacuees $0.31 B. Lines are rounded so they add up to the total shown | the same |
+| 5 (4) | Firefighting is most of it | (8.56 + 1.80) / 12.63 = 82% | the same |
+| 5 (4) | In four big provinces it nearly doubled | BC, Alberta, Saskatchewan and Ontario: $2.15 B a year 2023 to 2025 against $1.13 B a year 2016 to 2021 (2025 dollars) = 1.9 times. 2016 to 2021 is used because 2022 has no Alberta figure (C28) | economic-value/cost_tally_by_year.csv |
+| (4) | About $76 a year for each Canadian | $12.63 B / 4 / 41,798,407 (July 1, 2026) = $75.54 | data/canada_population_2026.csv |
+| 6 (5) | 2023 fires: 15 months of Canada's emissions | 870 / 686.9 Mt CO2e x 12 = 15.2 months (C31) | threads/t1_official_inventory_lines.csv |
+| 7 (6) | Budget circles | 2026-27 base wildfire budget (filled) against average yearly spending 2023-24 to 2025-26 (outline), area to scale; Quebec has no separate wildfire budget (section 5.15) | readiness/scorecard.csv |
+| 7 (6) | 70 yrs; 4,231 | Age of Saskatchewan's oldest water bombers; firefighters and support staff who came from elsewhere to help Alberta in 2023 | readiness/highlights.csv |
+| 8 (7) | Of $1.02 billion in new federal wildfire money, at least $124 million was paid by March 2025 | Four new federal programs: amounts announced against payment records; the satellite has no separable spending record, hence "at least" (section 5.16) | policy/measures.csv |
+| 8 (7) | 53 research projects | Federal research agreements active after October 22, 2026 | policy/research_underway.csv |
+| 9 (8) | In 2026, 7 in 10 hectares burned in fires that grew past 1,000 hectares within three days | Mean of 69.3% (counted from first satellite detection) and 80.4% (from the start of the main burning run), 74.8%, rounded to 7 in 10 | response/escape_speed_2026_summary.csv |
+| 9 (8) | What auditors and fire reviews call for | The gaps in the readiness records, grouped under four needs by keyword (section 5.19) | readiness/gaps_west.csv, gaps_east.csv |
+
+### 2.2 Verified claims C1 to C40
 
 Values are the verified values from `story/verified_numbers.json`. "Status" is the verifier's verdict ([methods/verification.md](methods/verification.md) has the full reasoning). Paths are relative to `analysis/` unless they start with `data/`. C1b and X (counts the page text uses) are derived inside `scripts/build_story_json.py` from the same files; see section 3.
 
@@ -69,7 +100,7 @@ Values are the verified values from `story/verified_numbers.json`. "Status" is t
 | C20 | (Not shown on the page or slides.) Modelled smoke deaths outnumber direct deaths about 70 to 190 to one (pooled 795 to 2,079 smoke deaths over 11 direct deaths, 72.3 to 189.0, rounded to 10) | scripts/build_story_json.py (computed from the deaths series) | health/modelled_acute_deaths_national.csv; C19 | Corrected from "50 to 200"; verified as 114 to 297 before the Wainwright deaths were added on 2026-10-22, now recomputed in the build from the same smoke series |
 | C21 | On reserve 3.3% vs off reserve 0.11% lived within 10 km of a 1,000 ha+ fire in 2 or more years (30.6 times) | threads/scripts/t4_repeat_exposure.py | threads/t4_repeat_exposure_summary.csv | Confirmed. On-reserve counts are lower bounds |
 | C22 | Seven First Nation communities within 10 km of fire in all four years | threads/scripts/t4_repeat_exposure.py | threads/t4_fn_communities_years_exposed.csv | Confirmed. Any fire size; none at 200 ha+ |
-| C23 | Buildings flagged likely destroyed: 2023 844 (4 events), 2024 417 (Jasper, in-sample), 2025 405 (2 events), 2026 517 (all outlines); precision 0.836, recall 0.832 | property/scripts/06_calibrate.py, 07_apply_rule.py, 15_apply_2026.py | property/calibration_accuracy.csv, estimates_2026_by_fire.csv, property/results.md event table | Corrected: event subsets, not national totals |
+| C23 | Buildings flagged likely destroyed: 2023 844 (4 events), 2024 417 (Jasper, in-sample), 2025 405 (2 events), 2026 488 (all outlines, after the quality screen; 517 before); precision 0.836, recall 0.832 | property/scripts/06_calibrate.py, 07_apply_rule.py, 15_apply_2026.py, 13_value_destroyed.py | property/calibration_accuracy.csv, estimates_2026_by_fire.csv, destroyed_value_estimates.csv, property/results.md event table | Corrected: event subsets, not national totals. Updated 2026-10-23: the quality screen (section 5.11) removes 29 of the 517 2026 flags |
 | C24 | Bald Range 2026: 168 flagged (154 to 185) vs about 150 official | property/scripts/15_apply_2026.py, 10_events_official.py | property/estimates_2026_by_fire.csv, events_official.csv | Confirmed |
 | C25 | 9,503 km of roads and 686 km of rail inside burned areas 2023 to 2026 | economy/scripts/05b_infra_by_year.py | economy/infra_by_year.csv (also property/infrastructure_by_year.csv) | Confirmed. Mapped footprints, length inside, not damage |
 | C26 | About $0.92 B dwelling value (census proxy) for structures lost or damaged at seven events with official counts | property/scripts/13_value_destroyed.py | property/destroyed_value_official.csv | Corrected wording: counts mix homes, structures and "damaged or destroyed" |
@@ -98,8 +129,14 @@ raw public data (data/SOURCES.md)
                                            methods/verification.md)
   -> scripts/build_story_json.py          (copies the verified values, adds chart series read
                                            directly from the analysis CSVs, derives C1b and X)
-  -> data/story.json                      -> index.html (the page reads only data/*.json)
-  -> slides/make_slides.py                (reads verified_numbers.json and the same CSVs)
+  -> data/story.json                      (map explorer, city search, largest fires, story numbers)
+  -> analysis/costs-full/scripts/combine_bill.py
+                                          (the cost floor: combined_bill.csv, bill_summary.json)
+  -> scripts/build_chapters.py            (imports slides/make_slides_merge.py, so the chapters and the
+                                           slides compute each number with the same code; writes
+                                           data/chapters.json and data/map/burn_*.png)
+  -> index.html                           (the page reads only data/*.json and data/map/)
+  -> slides/make_slides_merge.py          (reads verified_numbers.json and the same CSVs)
                                           -> the nine carousel PNGs
 ```
 
@@ -310,6 +347,9 @@ Each subsection gives the question, data, method, assumptions, limits and what w
    - Net (the central figure): subtract, per province and coefficient, the lowest 2018 to 2024 seasonal total, which removes ordinary above-median days. Ranges are the coefficient's 95% CI only.
 4. Record tests: quasi-Poisson weekly deaths and monthly ED visits against the smoke increment (exploratory; low power).
 
+5. People reached by smoke (slide 4, chapter 3): people in dissemination areas whose assigned station recorded at least one day above 27 ug/m3 from May to September (`exposure_by_group.csv`, column `people_ge1day_gt27`, 50 km, national, total population). 2023: 32.02 million; the chart on the page shows 2018 to 2026.
+6. Days of unhealthy smoke at each air monitor (the slide 4 map and the chapter 3 map): days with a daily mean above 27 ug/m3, May to September, at monitors with at least 100 days of data that season (`slides/option_visuals.py`, `smoke_season_map` and `smoke_monitors_by_year`; derived tables `data/smoke-cost/monitor_unhealthy_days_2023.csv` and `monitor_unhealthy_days_by_year.csv`, because the daily file is over the size limit). The daily file holds both the validated NAPS value and the AirNow real-time value for the same day at many monitors from 2018 to 2024; one reading per monitor and day is kept (validated first), as in step 1. Before 2026-10-23 the map counted both readings at those monitors; the corrected counts moved many monitors down a colour band (section 6).
+
 **Assumptions.** Nearest-station exposure; the quietest year had no wildfire smoke; coefficients transfer to these populations.
 
 **On the page (October 22, 2026).** The page shows Health Canada's own 2023 estimates (Matz and others, 2026, GeoHealth, Table 1, AQBAT; `analysis/health/hc_matz2026_2023.csv` from `scripts/10_hc_table1.py`): asthma symptom days in children, restricted activity days, respiratory and cardiac emergency visits and hospital admissions, each with its 95% range. Death rows are dropped by the script. The CIHI-based estimate of extra emergency visits (`ed_extra_visits_by_year.csv`) is not used: it rests on one significant fit of six, and Health Canada's Ontario study (Chen and others, 2025, CMAJ) found a rise in asthma visits only.
@@ -346,8 +386,9 @@ Each subsection gives the question, data, method, assumptions, limits and what w
 2. Calibration (`06_calibrate.py`): Jasper footprints labelled by the official structure layer (positive = "Destroyed"; 374 destroyed in the labelled set). Search rules "building feature >= a AND ring feature >= b" over {dnbr_bmax, dnbr_bmed, dndvi_bmax} x {dnbr_r10_30, dnbr_r20_60, none} on a 10-unit grid, chosen by F1. Honest accuracy by 5-fold spatial cross-validation (500 m blocks; rule re-chosen on 4 folds, scored on the fifth): **precision 0.836, recall 0.832, F1 0.834** (in-sample 0.856, 0.861). Final rule: `dndvi_bmax >= 180 AND dnbr_r20_60 >= 40`, plus burn context at least 0.20.
 3. Apply (`07_apply_rule.py`, `15_apply_2026.py`): flags counted inside the fire polygon or within 500 m (outlines miss unburned islands and edges); the 500 to 1,000 m band is a false-positive check (0 to 7 per event). Estimate = flagged x P / R; band from 95% Wilson intervals of P and R. The band covers calibration sampling error only, not transfer error.
 4. Transfer checks (`14_transfer_checks.py`): flagged / official count at six events: 0.31 (Barrington, unexplained) to 1.51.
-5. Value (`12_value_exposed.py`, `13_value_destroyed.py`): 2021 Census average owner-occupied dwelling value in the DA (fallback census division, then province), applied to official counts (C26) and to flags. A proxy, not insured or market loss.
-6. Infrastructure (`09_infra.py`): length inside burned areas.
+5. Value (`12_value_exposed.py`, `13_value_destroyed.py`): 2021 Census average and median owner-occupied dwelling value in the DA (fallback census division, then province), applied to official counts (C26) and to flags. The cost floor (section 5.18) uses the median, the low end; the average is the high end. Values are 2021 census values, not adjusted for inflation. A proxy, not insured or market loss.
+6. Quality screen on 2026 flags (added 2026-10-23, the same screen the second cost research round applies to its own satellite counts): drop flags from satellite scenes whose dNBR offset is beyond plus or minus 100, outlines where flags 500 to 1,000 m outside exceed 26% of flags inside 500 m (a sign of false positives), and outlines under 10 ha. 29 of 517 flags fail (listed in `work/screen_fail_2026.csv`); the 488 that pass are worth $268 M at median values. The 2023 to 2025 check events all pass.
+7. Infrastructure (`09_infra.py`): length inside burned areas.
 
 **Limits.** Calibrated on one event (Jasper townsite); surviving buildings under burned forest canopy can be flagged (two Ontario clusters); official counts mix units; coverage differs by year (C23).
 
@@ -381,6 +422,8 @@ Each subsection gives the question, data, method, assumptions, limits and what w
 - Parks (`04_parks.py`): baseline = mean of FY2017-18 to 2019-20 (excluding years the park itself burned 1,000 ha or more); control = 84 places reported every year (C39).
 - BC difference-in-differences on BC Stats LFS by economic region (descriptive; the gap predates the fires).
 
+**On the page and the slides.** Only component A (four-province firefighting, 2023 to 2025) enters the published cost (section 5.18). The timber value (E) is shown on the page as a reference line outside the total, and the modelled deaths (F) are not used.
+
 **Limits.** Statistics Canada tables (roundwood value, GDP, LFS by ER outside BC) could not be downloaded; scripts pick them up when present. 2026 is a floor (most cash components unpublished). Firefighting definitions differ by province; 2022 lacks Alberta.
 
 **What would change the result.** StatCan roundwood value; 2026 public accounts; a different VSL; final insured figures.
@@ -404,7 +447,8 @@ Each subsection gives the question, data, method, assumptions, limits and what w
 1. `agencies_west.csv`, `agencies_east.csv`: one row per agency, every value with its basis (which line of which document, forecast or actual).
 2. Budget cover = 2026-27 base wildfire budget / mean(actual 2023-24, 2024-25, 2025-26). Computed in `analysis/readiness/scripts/04_scorecard.py` (`scorecard.csv`, columns `budget_2026_27_m`, `avg_actual_m`, `budget_pct`) and again on the page from the agency rows (`scripts/build_chapters.py`).
 3. `gaps_west.csv`, `gaps_east.csv`: each gap in one plain line with a short verbatim quote and its source.
-4. Slide colour rule (`scorecard.csv`): red = a problem on record with no fix in place; amber = a fix ordered or under way; grey = not found. Budget: under 50% red, 50% to 80% amber, 80% and over green. The page uses no status colours; it shows spending and budget as nested circles.
+4. The slide and the page show spending and budget as nested circles: the outline is the average yearly spending 2023-24 to 2025-26, the filled circle the 2026-27 budget, area to scale; Quebec, with no separate wildfire budget, shows spending only. The status colours in `scorecard.csv` (red = a problem on record with no fix in place; amber = a fix ordered or under way; grey = not found; budget under 50% red, 50% to 80% amber, 80% and over green) are kept in the file but not shown.
+5. The Northwest Territories budget finding cites the official Hansard of October 21, 2025 (p. 2797); an unofficial transcription site used before was replaced on 2026-10-23.
 
 **Limits.** Budget bases differ: Saskatchewan's line is the whole public safety agency and its spending is by fire season; Manitoba adds an all-hazard emergency vote; the Northwest Territories' line includes forestry; Quebec has no separate wildfire line; Yukon's 2026-27 figure could not be read; some 2025-26 values are forecasts. Recommendation counts are as published, and several governments publish none.
 
@@ -416,23 +460,49 @@ Each subsection gives the question, data, method, assumptions, limits and what w
 
 `analysis/coverage/`: 65 fires reported in news and official releases from 2023 to 2026 (news used only as a checklist) were matched to NBAC and 2026 outlines by year, distance (30 km) and dates, and by agency fire number or name where available. 63 matched. Gaps: CFB Wainwright (no satellite outline; estimated separately in `analysis/wainwright`), Thunder Lake AB (structural fires, too small), Walsh River NL (outline far smaller than the agency record), Long Lake AB 2023 (NBAC joins it with BC fires). The national total uses agency totals, so these do not change it. `labels.csv` gives the eight labelled fires on the chapter 1 map.
 
-### 5.18 The bill
+### 5.18 The cost
 
-`analysis/costs-full/` brings together every cost with a public record, each dollar counted once. `scripts/combine_bill.py` reads `gov*_costs.csv` (government firefighting and emergency response), `econ*_costs.csv` (property, infrastructure and economic losses) and `health*_costs.csv` (health care, evacuations, lost work), so later research rounds (`gov2_costs.csv` and so on) are added by re-running it, and writes `combined_bill.csv` (one row per line) and `bill_summary.json`.
+**Question.** What did the 2023 to 2026 fires cost Canada, counting only real costs with a public record, each dollar once?
 
-- **Receipt on the page and the slide** (`bill_summary.json`, block `slide`): trees burned 2023 to 2026 at Crown stumpage and provincial firefighting in BC, Alberta, Saskatchewan and Ontario (`analysis/economic-value/cost_tally_by_year.csv`, 2025 dollars); firefighting and emergency response elsewhere, 2023 to 2025 (official spending); 2026 firefighting from government forecasts and budgets; homes and buildings at census home values (`analysis/property`) plus buildings, infrastructure and repairs not in that count; evacuations and hospital care, including Indigenous Services Canada's on-reserve emergency response estimate (central value); lost work and business.
-- **Counting rules**: official spending in full; estimates at the low end of their range; lost wages and lost business output overlap, so only the larger is counted; federal disaster payments (DFAA) are not added because they repay provinces for costs already counted; insured losses (industry data) are not added (they run about 2.6 times census home values for the six events with both, `work/econ_property_insured_vs_bill.csv`).
-- **Per Canadian** = total divided by Canada's July 1, 2026 population (Statistics Canada 17-10-0005-01, `data/canada_population_2026.csv`), rounded down to the nearest $10.
-- **On the page**, "How the bill was counted" lists every line with its amount, basis, source and range (`scripts/build_chapters.py`, from `combined_bill.csv` and the cost files) and the items still without a public record (the "Not found" sections of `gov*_notes.md`, `econ*_notes.md` and `health*_notes.md`, with access notes and figures quoted from news reports left out).
-- Each source document in the cost files and manifests is in `data/references.json` (`scripts/build_refs_costs.py`). Raw downloads (`analysis/costs-full/raw/`, about 775 MB) are not in the repo; the manifests list every URL and `scripts/econ_fetch.sh` and `scripts/download_data.py` fetch them.
+**Data.** Three research rounds in `analysis/costs-full/`: government firefighting and emergency response (`gov_costs.csv`, `gov2_costs.csv`), property, infrastructure and economic losses (`econ_costs.csv`, `econ2_costs.csv`) and health care, evacuations and lost work (`health_costs.csv`, `health2_costs.csv`), each with its notes file (`*_notes.md`) and manifest. Official records only: estimates, public accounts, annual and departmental results reports, supplementary estimates, Hansard, audited statements, auditor reports, proactive disclosure. Four-province firefighting comes from `analysis/economic-value/cost_tally_by_year.csv`; buildings destroyed from `analysis/property` (section 5.11). All amounts are 2025 dollars (CPI all-items annual mean; 2026 is the January to September mean), except the census home values, which are 2021 values.
 
-### 5.19 How the page and the slides share numbers
+**Method.** `analysis/costs-full/scripts/combine_bill.py` reads every cost file, applies the rules below and writes `combined_bill.csv` (one row per line: low, central and high values, the amount counted in the floor and a note) and `bill_summary.json` (the floor by group; block `slide` feeds the receipt). A later research round is added by dropping its files in the folder and re-running it.
 
-`scripts/build_chapters.py` imports `slides/make_slides_merge.py` (the carousel builder) and writes `data/chapters.json` from the same functions and files, plus `data/map/burn_2023_2026.png` (the 2023 to 2026 outlines drawn in the same pixel box as the carousel map). `scripts/build_refs_readiness.py` adds the government, readiness, CIHI and coverage references to `data/references.json` from the manifests.
+- **The floor ("at least").** Official spending in full; every estimate at the low end of its range; buildings destroyed at median census home values (the average is the high end).
+- **Each dollar once.** Lost wages and lost business output overlap, so the floor counts the larger group (wages). Rows a later round replaced are dropped (for example the earlier Indigenous Services Canada rows and the rows the health round re-estimated). The Parks Canada 2024 residual is set to zero in the floor, because Parks Canada's 2024-25 response spending, counted in another line, covers those fires too.
+- **Not in the total, kept as reference lines.** The value of standing timber burned at Crown cutting fees ($12.97 B for 2023 to 2026): a valuation, not a cost, because most burned forest is outside harvest plans, much can be salvaged and harvest is capped by the allowable cut. Indigenous Services Canada's on-reserve emergency estimate ($0.79 to $1.49 B): it partly repays provincial evacuation costs that are already counted, and the overlap is not published.
+- **Not added.** Federal disaster payments (DFAA), income support and EI pay for costs already counted. Insured losses are industry data and overlap the building values (they run about 2.6 times census home values at the six events with both, `work/econ_property_insured_vs_bill.csv`).
+- **Left out.** A line whose dollar figure is found only in a news report (news was used only to find documents), for example Nova Scotia's $500 household payments.
+- **2026.** The season is not closed: firefighting uses government forecasts and budgets, plus estimates from area burned where there is no forecast or the season ran far past its budget. It is its own line on the receipt.
+
+**Result.** Floor $12.63 B for 2023 to 2026: firefighting 2023 to 2025 $8.56 B, firefighting 2026 estimates $1.80 B, homes, buildings and repairs $1.46 B ($1.09 B of it buildings found by satellite at median census values), evacuations and hospital care $0.49 B, lost wages of evacuees $0.31 B. Per year $3.16 B (published as "at least $3 billion a year"); per Canadian per year $75.54 (Canada's July 1, 2026 population, 41,798,407, Statistics Canada 17-10-0005-01, `data/canada_population_2026.csv`; published as "about $76").
+
+**On the page.** The receipt can be shown per year, per Canadian or for the four years; its lines are rounded so they add up to the total shown (largest remainder). Each line opens to its largest items at their actual amounts, with sources. "How the costs were counted" lists every line with its amount, basis, source and range (`scripts/build_chapters.py`, from `combined_bill.csv` and the cost files; line labels are put in plain words by `plain_label` and checked for internal file names and working terms). The costs still without a public record are listed from `analysis/costs-full/still_open.csv` (12 items, such as utilities, highways and rail, farms and mills).
+
+**Limits.** A floor, not a total: 12 kinds of cost have no public record yet, and 2026 rests on forecasts and estimates. Spending definitions differ by government. Building values are a census proxy, not insured or market loss.
+
+**What would change the result.** 2026 public accounts; official building counts for every fire; records for the 12 open items.
+
+Each source document in the cost files and manifests is in `data/references.json` (`scripts/build_refs_costs.py`; news sites are left out). Raw downloads (`analysis/costs-full/raw/`, about 775 MB) are not in the repo; the manifests list every URL and `scripts/econ_fetch.sh` and `scripts/download_data.py` fetch them.
+
+### 5.19 How the page and the slides share numbers, and what the page lets readers explore
+
+`scripts/build_chapters.py` imports `slides/make_slides_merge.py` (the carousel builder) and writes `data/chapters.json` from the same functions and files, so a number on a slide and in the matching chapter is computed by the same code. `scripts/build_refs_readiness.py` and `scripts/build_refs_costs.py` add the government, readiness, CIHI, coverage and cost references to `data/references.json` from the manifests.
+
+Each chapter's main graphic can be explored. The data behind each:
+
+- **The fires.** The map switches between 2023 to 2026 and each year: `data/map/burn_2023_2026.png` and `burn_2023.png` to `burn_2026.png`, drawn from `analysis/graphics/canada_burned_by_year_paths.json` (`analysis/graphics/scripts/03_burn_by_year.py`) in the same pixel box as the carousel map. A named fire shows its area inside its satellite outline (`analysis/coverage/labels.csv`). The bar chart is the fire agencies' official totals, 1990 to 2026 (the same measure as the headline), and a bar picks the map year.
+- **Heat and drought.** A circle, a temperature bar or a drought row picks a year and shows its May to August temperature anomaly, peak share of forest in drought (April to September) and area burned.
+- **The smoke.** The monitor map for any year from 2018 to 2026 (section 5.9, step 6); a monitor shows its days in every year; the bars of people reached pick the year.
+- **The cost.** Per year, per Canadian or the four years, and each line's largest items (section 5.18).
+- **The carbon.** A year shows the wildfire and official totals.
+- **What would help.** Each of the four needs opens the readiness gaps behind it, grouped by government, with links. The grouping is by keyword in the gap text (`NEEDS` in `build_chapters.py`), so a gap can sit under more than one need.
 
 ## 6. Independent verification
 
 `methods/verification.md` is the full independent check of C1 to C40, done 2026-10-22 by reading every cited file (and REBUILD.md, which supersedes `results.md` text where they differ) without modifying any analysis file. It lists eight claims that needed correction (C4, C12, C16, C18, C19, C20, C23, C26) and the caveats carried into the page. The verified values are in `story/verified_numbers.json`, which is the only source of claim numbers for the page and the slides.
+
+A second independent check on 2026-10-23 read every number on the nine slides and the page against the analysis files. It confirmed the area (35.9 M ha, 2.04 times), the heat link (1 in 3), the smoke numbers (32 million, 1.1 million asthma days), the 15 months of emissions, the readiness figures and the federal money ($1.02 B, $124 M, 53 projects). It found six errors, all fixed before publishing: the timber value counted as a cost, three overlaps or overstatements in the cost (the on-reserve estimate inside the total, a Parks Canada amount counted twice, average instead of median home values), the last slide's claim about remote fires and early detection, greenhouse gases written as CO2 without the year, Alberta's budget cover rounded twice, and "driest four years" where only the fire seasons rank first. `methods/verification.md` lists each finding and its fix. The corrected cost floor ($12.63 B) was recomputed by the scripts after these fixes and has not had a second independent read.
 
 ## 7. How to challenge a number
 
@@ -453,4 +523,7 @@ These are gaps in the record as it stands, stated rather than filled in:
 - Some raw inputs were fetched "in an earlier step" and their manifests give a layer name rather than a full download URL (several data/geo boundary layers, the Quebec SOPFEU points, the official totals snapshots). The snapshots are kept in the repo; the boundary layers need the named service.
 - The TSB raw files were deleted after the run (manifest note); they are re-downloadable from the TSB, but the copy used is not preserved.
 - The analyses of the 2026 response (analysis/response), the Wainwright burn (analysis/wainwright), readiness (analysis/readiness), government measures (analysis/policy) and the coverage check (analysis/coverage) are in the repo; `scripts/sync_analysis.py` refreshes them with one command.
-- The emergency room estimate is one significant result among six fits in `analysis/health/results.md` (all-month fits show no effect), so the page shows its full range.
+- The emergency room estimate is one significant result among six fits in `analysis/health/results.md` (all-month fits show no effect); the page and slides use Health Canada's estimates instead.
+- Until 2026-10-23 the per-monitor smoke-day counts behind the slide 4 map counted the validated and the real-time reading of the same day at many monitors (section 5.9). Copies of slide 4 made before that date show too many days at those monitors; the people-reached and health numbers were never affected.
+- The cost floor after the 2026-10-23 fixes has not had a second independent read (section 6), and its 2026 lines rest on forecasts, budgets and estimates from area burned.
+- The four needs in the last chapter group readiness gaps by keyword; the grouping is a reading aid, not a count of recommendations.
