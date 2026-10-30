@@ -200,7 +200,12 @@ def main():
     res = pd.read_csv(os.path.join(AN, "policy/research_underway.csv"))
     res = res[res.status_2026_10_22.str.startswith("agreement active")]
     tl7 = pd.read_csv(os.path.join(RD, "timeline.csv"))
-    out["c7"] = dict(timeline=recs(tl7), satellite_year=int(tl7[tl7.item.str.contains("satellite")].when.iloc[0]),
+    # the two programs that had started by March 2025 (equipment and training from 2022, FireSmart and research from
+    # 2023); the aircraft lease starts in April 2026 and the satellite's spending sits inside larger budgets
+    started = [(a, b, c) for a, b, c in pol["jars"] if a in ("Firefighting equipment and training", "FireSmart and fire research")]
+    assert len(started) == 2, started
+    out["c7"] = dict(timeline=recs(tl7), satellite_year=int(tl7[tl7.item.str.contains("satellite")].when.str.extract(r"(\d{4})")[0].iloc[0]),
+                     started_set_m=sum(b for _, b, _ in started), started_paid_m=sum(c for _, _, c in started),
                      programs=[dict(name=a, set_m=round(b, 1), paid_m=round(c, 1)) for a, b, c in pol["jars"]],
                      set_total_m=sum(b for _, b, _ in pol["jars"]), paid_total_m=sum(c for _, _, c in pol["jars"]),
                      intl_2023=int(nat.loc[nat.year == 2023, "international_personnel_imported"].iloc[0]),
@@ -215,7 +220,7 @@ def main():
 
     # 8 ---------------------------------------------------------------------
     tl = pd.read_csv(os.path.join(RD, "timeline.csv"))
-    bombers_ab_mb = int(tl[tl.who.str.contains("AB") & tl.item.str.contains("water bombers")].when.iloc[0])
+    bombers_ab_mb = int(tl[tl.who.str.contains("AB") & tl.item.str.contains("water bombers")].when.str.extract(r"(\d{4})")[0].iloc[0])
     NEEDS = [("attack", "Faster first attack", "on new fires",
               r"initial attack|first attack|containment target|response-time|left unfought|within one hour"),
              ("crews", "More firefighters", "hired and trained before the season",

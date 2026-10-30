@@ -473,7 +473,7 @@ def build(s):
         head="Hotter is the trend, dry was the luck, and most of the cost is not counted",
         body='''
 <div class="explore"><div class="ex1">Explore the full story and the data</div>
-<div class="ex2">Link in bio · sjvadrevu.github.io/canada-wildfires-2026</div></div>
+<div class="ex2">Link in bio · mediancanadian.ca/canada-wildfires-2026</div></div>
 <div class="brand"><img src="logo.png" alt="The Median Canadian"><div class="tagline">A curious Canadian explaining Canada through numbers, every week.</div></div>
 <div class="sources"><b>Data sources.</b> NRCan Canadian Wildland Fire Information System (NBAC, M3 outlines, National Fire Database, CNFDB), Land Cover 2020 and SCANFI; ECCC homogenized climate data, climate stations and National Inventory Report 2026; AAFC Canadian Drought Monitor; NAPS and AirNow air quality; Statistics Canada 2021 Census and road network; NRCan rail network; Transportation Safety Board; Public Safety Canada; Health Canada AQBAT and Chen et al. 2021 coefficients; Copernicus Sentinel-2; Microsoft building footprints (ODbL); National Forestry Database; provincial public accounts (BC, ON, AB, SK).</div>
 <div class="sources"><b>Licence.</b> Analysis and charts CC BY 4.0, The Median Canadian. Source data under the Open Government Licence (Canada) and each source's own licence.</div>''',

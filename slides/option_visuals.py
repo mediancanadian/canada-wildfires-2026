@@ -298,7 +298,7 @@ def smoke_day_map(day="2026-07-16", W=928):
     return "".join(el), len(st), int((st.pm25 > 100).sum())
 
 
-def station_days(cols, months=("05", "09")):
+def station_days(cols, months=("05", "11")):
     """Daily PM2.5 per air monitor, one row per monitor and day. The daily file carries both the validated NAPS
     value and the AirNow real-time value for the same day at many monitors (2018 to 2024); the validated value is
     kept, as in analysis/health/scripts/02_assign_pm.py and data/smoke-cost/scripts/build_pm25.py."""
@@ -312,15 +312,21 @@ def station_days(cols, months=("05", "09")):
 
 
 def smoke_season_map(year=2023, W=928):
-    """Air monitors coloured by the number of unhealthy smoke days (daily PM2.5 above 27), May to September."""
+    """Air monitors coloured by the number of unhealthy smoke days (daily PM2.5 above 27), May to November."""
     m = CanMap(W)
     st = station_days(["Latitude", "Longitude"])
     st = st[st.date.str[:4] == str(year)].dropna(subset=["Latitude", "Longitude"])
     g = st.groupby("naps_id").agg(lat=("Latitude", "first"), lon=("Longitude", "first"), n=("pm25", "size"),
                                   days=("pm25", lambda s: int((s > 27).sum())))
     g = g[g.n >= 100]
-    y0 = m.xy(-96, 61.5)[1]
-    el = _svg(W, m.H, y0)
+    pts = [m.xy(r.lon, r.lat) for _, r in g.iterrows()]
+    pad = 12  # dot radius plus its outline, so no dot is cut at an edge
+    y0 = max(0, min(y for _, y in pts) - pad - 6)
+    x0 = min(0, min(x for x, _ in pts) - pad)
+    x1 = max(W, max(x for x, _ in pts) + pad)
+    y1 = max(y for _, y in pts) + pad
+    vh = min(m.H, y1) - y0
+    el = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{vh * W / (x1 - x0):.0f}" viewBox="{x0:.0f} {y0:.0f} {x1 - x0:.0f} {vh:.0f}" font-family="{FONT}">']
     el.append(f'<path d="{m.base_path()}" fill="{LAND}" stroke="{EDGE}" stroke-width="1"/>')
     bands = [(0, "#5b6575", "None"), (1, "#e9a05c", "1 to 9 days"), (10, "#e0533a", "10 to 19 days"), (20, "#8e1b2c", "20 days or more")]
     for _, r in g.sort_values("days").iterrows():
@@ -334,7 +340,7 @@ def smoke_season_map(year=2023, W=928):
 
 def smoke_monitor_points(year=2023, W=928):
     """The slide's smoke map as data for the site: each monitor's x, y in the CanMap(W) pixel box and its number of
-    unhealthy smoke days (daily PM2.5 above 27), May to September."""
+    unhealthy smoke days (daily PM2.5 above 27), May to November."""
     m = CanMap(W)
     raw = os.path.join(AN, "..", "data/smoke-cost/station_daily_pm25_2018_2026.csv")
     keep = os.path.join(AN, "..", f"data/smoke-cost/monitor_unhealthy_days_{year}.csv")
@@ -352,7 +358,7 @@ def smoke_monitor_points(year=2023, W=928):
 
 
 def smoke_monitors_by_year(years=range(2018, 2027), W=928):
-    """Every air monitor with at least 100 days of May to September readings in a year: place, position in the
+    """Every air monitor with at least 100 days of May to November readings in a year: place, position in the
     CanMap(W) pixel box, and the number of unhealthy smoke days (daily PM2.5 above 27) in each year (None when the
     monitor did not report enough that year). A derived table is kept for the repo, where the raw daily file is not."""
     m = CanMap(W)
@@ -553,7 +559,7 @@ def scorecard_html():
     return f'<table class="score">{head}{"".join(rows)}</table>', sc
 
 
-def timeline(W=928, row=74):
+def timeline(W=928, row=74, when_dx=262, when_size=30, item_size=27, who_size=22):
     """Vertical timeline: when each new piece of capacity arrives (analysis/readiness/timeline.csv)."""
     t = pd.read_csv(os.path.join(READY, "timeline.csv"))
     H = row * len(t) + 10
@@ -563,9 +569,9 @@ def timeline(W=928, row=74):
     for k, r in t.iterrows():
         y = row / 2 + k * row
         el.append(f'<circle cx="{xl}" cy="{y:.0f}" r="11" fill="{FIRE}" stroke="#11151b" stroke-width="3"/>'
-                  f'<text x="{xl + 32}" y="{y + 10:.0f}" font-size="30" font-weight="800" fill="{FIRE}">{r["when"]}</text>'
-                  f'<text x="{xl + 262}" y="{y - 2:.0f}" font-size="27" font-weight="700" fill="{TEXT}">{r["item"]}</text>'
-                  f'<text x="{xl + 262}" y="{y + 28:.0f}" font-size="22" fill="{MUTED}">{r["who"]}</text>')
+                  f'<text x="{xl + 32}" y="{y + 10:.0f}" font-size="{when_size}" font-weight="800" fill="{FIRE}">{r["when"]}</text>'
+                  f'<text x="{xl + when_dx}" y="{y - 2:.0f}" font-size="{item_size}" font-weight="700" fill="{TEXT}">{r["item"]}</text>'
+                  f'<text x="{xl + when_dx}" y="{y + 28:.0f}" font-size="{who_size}" fill="{MUTED}">{r["who"]}</text>')
     el.append("</svg>")
     return "".join(el)
 
@@ -576,7 +582,7 @@ def hu(x):
     return int(math.floor(float(x) + 0.5))
 
 
-def budget_circles(W=928, R=104, per_row=4):
+def budget_circles(W=928, R=104, per_row=4, lab_size=27, sub_size=20, sub_dy=56):
     """Outer circle: average yearly fire spending 2023-24 to 2025-26. Filled inner circle: 2026-27 budget. Area to scale."""
     import math
     sc = pd.read_csv(os.path.join(READY, "scorecard.csv")).sort_values("avg_actual_m", ascending=False)
@@ -588,7 +594,7 @@ def budget_circles(W=928, R=104, per_row=4):
     for rr in row_r:
         y += 2 * rr + 4
         bases.append(y)
-        y += 70
+        y += 70 + (sub_dy - 56)
     H = y
     el = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H:.0f}" viewBox="0 0 {W} {H:.0f}" font-family="{FONT}">',
           '<defs><pattern id="hatch2" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">'
@@ -601,15 +607,15 @@ def budget_circles(W=928, R=104, per_row=4):
         el.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{ro:.1f}" fill="rgba(255,255,255,0.06)" stroke="{MUTED}" stroke-width="2.5"/>')
         if pd.isna(r["budget_2026_27_m"]):
             el.append(f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{ro:.1f}" fill="url(#hatch2)"/>')
-            pct, sub = "", f'No separate budget</text><text x="{cx:.1f}" y="{base + 80:.0f}" font-size="20" fill="{MUTED}" text-anchor="middle">${hu(r["avg_actual_m"])}M spent'
+            pct, sub = "", f'No separate budget</text><text x="{cx:.1f}" y="{base + sub_dy + 1.4 * sub_size:.0f}" font-size="{sub_size}" fill="{MUTED}" text-anchor="middle">${hu(r["avg_actual_m"])}M spent'
         else:
             ri = R * math.sqrt(r["budget_2026_27_m"] / vmax)
             el.append(f'<circle cx="{cx:.1f}" cy="{base - ri:.1f}" r="{ri:.1f}" fill="{FIRE}"/>')
             pct = f'{hu(100 * r["budget_2026_27_m"] / r["avg_actual_m"])}%'
             sub = f'${hu(r["budget_2026_27_m"])}M of ${hu(r["avg_actual_m"])}M'
-        el.append(f'<text x="{cx:.1f}" y="{base + 30:.0f}" font-size="27" font-weight="800" fill="{TEXT}" text-anchor="middle">{r["prov"]} '
+        el.append(f'<text x="{cx:.1f}" y="{base + 30:.0f}" font-size="{lab_size}" font-weight="800" fill="{TEXT}" text-anchor="middle">{r["prov"]} '
                   f'<tspan fill="{FIRE}">{pct}</tspan></text>'
-                  f'<text x="{cx:.1f}" y="{base + 56:.0f}" font-size="20" fill="{MUTED}" text-anchor="middle">{sub}</text>')
+                  f'<text x="{cx:.1f}" y="{base + sub_dy:.0f}" font-size="{sub_size}" fill="{MUTED}" text-anchor="middle">{sub}</text>')
     el.append("</svg>")
     return "".join(el)
 

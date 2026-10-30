@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Week 2 carousel: Canada's wildfires, 2023 to 2026 (The Median Canadian).
+"""Week 3 carousel, October 29, 2026: Canada's wildfires, 2023 to 2026 (The Median Canadian).
 
 One command rebuilds everything:
     python3 make_slides.py
@@ -24,11 +24,12 @@ BASE = os.path.abspath(os.path.join(HERE, ".."))
 AN = os.path.join(BASE, "analysis")
 VERIFIED = os.path.join(BASE, "story", "verified_numbers.json")
 N_SLIDES = 9
+COVER_KICKER = "The Median Canadian · Week 3 · October 29, 2026"  # week it goes out in, plus its date
 # receipt lines on the bill slide (keys of bill_summary.json "slide"); the site uses the same labels
 BILL_LINES = [("fight", "Firefighting, 2023 to 2025"), ("fight26", "Firefighting, 2026 estimates"),
               ("build", "Homes, buildings and repairs"), ("evac", "Evacuations and hospital care"),
               ("work", "Lost wages of evacuees")]
-PHOTO_DIR = "photos_v2"  # watermarked previews for review; swap for licensed files before posting
+PHOTO_DIR = "photos_licensed"  # licensed from All Canada Photos (subscription, Royalty-Free); watermarked previews are in photos_v2
 # slide: (file, background-position, background-size)
 PHOTOS = {
     1: ("s0_6188-56031079.jpg", "50% 50%", "cover"),
@@ -334,9 +335,10 @@ def bubbles(pts, W=928, H=490, xmin=-0.6, xmax=2.4, ymin=0, ymax=85, label_years
     for g in (25, 50, 75):
         el.append(f'<line x1="{left}" x2="{W - right}" y1="{sy(g):.1f}" y2="{sy(g):.1f}" stroke="{GRID}" stroke-width="2"/>')
         el.append(f'<text x="{left - 10}" y="{sy(g) + 7:.1f}" font-size="20" fill="{MUTED}" text-anchor="end">{g}%</text>')
+    xticks = []
     for g in (0, 1, 2):
         el.append(f'<line x1="{sx(g):.1f}" x2="{sx(g):.1f}" y1="{top}" y2="{H - bottom}" stroke="{GRID}" stroke-width="2"/>')
-        el.append(f'<text x="{sx(g):.1f}" y="{H - bottom + 26}" font-size="20" fill="{MUTED}" text-anchor="middle">{g:+d}°C</text>'.replace(">+0°C<", ">0°C<"))
+        xticks.append(f'<text x="{sx(g):.1f}" y="{H - bottom + 26}" font-size="20" fill="{MUTED}" text-anchor="middle" paint-order="stroke" stroke="#11151b" stroke-width="5" stroke-linejoin="round">{g:+d}°C</text>'.replace(">+0°C<", ">0°C<"))
     el.append(f'<text x="{(left + W - right) / 2:.1f}" y="{H - 4}" font-size="20" fill="{MUTED}" text-anchor="middle">Summer temperature, compared with 1961 to 1990</text>')
     el.append(f'<text x="0" y="18" font-size="20" fill="{MUTED}" text-anchor="start">Share of forest in drought</text>')
     labs = []
@@ -347,6 +349,7 @@ def bubbles(pts, W=928, H=490, xmin=-0.6, xmax=2.4, ymin=0, ymax=85, label_years
         el.append(f'<circle cx="{sx(x):.1f}" cy="{sy(y):.1f}" r="{r:.1f}" fill="{col}" fill-opacity="{op}" stroke="#10151c" stroke-width="2"/>')
         if yr in label_years:
             labs.append((sx(x), sy(y) - r - 8, str(yr), FIRE if yr in hot else TEXT))
+    el.extend(xticks)
     el.extend(place_labels(labs, 22, W))
     el.append("</svg>")
     return "".join(el)
@@ -427,7 +430,7 @@ def germany_map(Wd=928, Hmax=580, with_germany=True, crop_top=None):
 # label text and side are layout choices; positions come from analysis/coverage/labels.csv
 LABEL_TEXT = {"Thunder Bay district, 2026": ("Thunder Bay ’26", "end"), "Summerland, 2026": ("Summerland ’26", "start"),
               "Jasper, 2024": ("Jasper ’24", "above"), "Yellowknife, 2023": ("Yellowknife ’23", "start"),
-              "Flin Flon / Denare Beach, 2025": ("Flin Flon ’25", "start"), "Lebel-sur-Quevillon, 2023": ("Lebel-sur-Quévillon ’23", "above"),
+              "Flin Flon / Denare Beach, 2025": ("Flin Flon ’25", "start"), "Lebel-sur-Quevillon, 2023": ("Lebel-sur-Quévillon ’23", "above-right"),
               "Shelburne County, 2023": ("Shelburne ’23", "end"), "Kingston NL, 2025": ("Kingston NL ’25", "end")}
 
 
@@ -439,10 +442,10 @@ def fire_labels(fs=24):
     for _, r in lab.iterrows():
         txt, anc = LABEL_TEXT[r["label"]]
         x, y = m.xy(r["lon"], r["lat"])
-        dx = {"start": fs * 0.45, "end": -fs * 0.45}.get(anc, 0)
-        dy = -fs * 0.75 if anc == "above" else 0
+        dx = {"start": fs * 0.45, "end": -fs * 0.45, "below-end": fs * 0.4, "above-right": fs * 2.1}.get(anc, 0)
+        dy = -fs * 0.75 if anc == "above" else (-fs * 0.85 if anc == "above-right" else (fs * 0.95 if anc.startswith("below") else 0))
         y_t = y + dy
-        anc = anc if anc in ("start", "end") else "middle"
+        anc = {"below-end": "end"}.get(anc, anc if anc in ("start", "end") else "middle")
         out.append(f'<circle cx="{x:.1f}" cy="{y:.1f}" r="{fs * 0.25:.1f}" fill="#fff" stroke="#11151b" stroke-width="{fs * 0.08:.1f}"/>'
                    f'<text x="{x + dx:.1f}" y="{y_t + fs * 0.35:.1f}" font-size="{fs}" font-weight="700" fill="#fff" text-anchor="{anc}" '
                    f'font-family="{FONT}" paint-order="stroke" stroke="#11151b" stroke-width="{fs * 0.2:.1f}" stroke-linejoin="round">{esc(txt)}</text>')
@@ -497,7 +500,7 @@ def build(s):
         body=f'''
 <div class="chart" style="margin-top:14px">{germany_map(Hmax=600, with_germany=False, crop_top=300)}</div>
 <p class="foot">Red: land burned, 2023 to 2026.</p>''',
-        source="CCFM National Forestry Database; CWFIS · Canada, 1990 to 2026 · Oct 2026 · CC BY 4.0"))
+        source="CCFM National Forestry Database; CWFIS; CIFFC · Canada, 1990 to 2026 · Oct 2026 · CC BY 4.0"))
 
     # 2 Climate ------------------------------------------------------------
     ty = list(range(1950, 2027))
@@ -552,12 +555,12 @@ def build(s):
     slides.append(dict(
         kicker="The heat and drought",
         head="Hotter, drier summers",
-        dek=f"Summers ran {sum(s['temp'][y] for y in run) / 4:.1f}°C above 1961 to 1990, and 1 in {round(1 / V('C9.share_attributable'))} hectares burned is linked to that heat.",
+        dek=f"Summers ran {sum(s['temp'][y] for y in run) / 4:.1f}°C above 1961 to 1990, and warming is linked to 1\u00a0in\u00a0{round(1 / V('C9.share_attributable'))} hectares burned.",
         body=f'''
-<div class="note">Each circle is a year; bigger circles burned more land. 2023 to 2026: driest four fire seasons since 1950.</div>
+<div class="note">Each circle is a year; bigger circles burned more land. 2023 to 2026: the driest run of four fire seasons since 1950.</div>
 <div class="chart">{chm}</div>
 <p class="foot">Canada warms twice as fast as the world, mostly from human activity (ECCC; IPCC).</p>''',
-        source="ECCC climate data; AAFC Canadian Drought Monitor · Canada, 1950 to 2026 · Oct 2026 · CC BY 4.0"))
+        source="ECCC climate data; AAFC Drought Monitor; NRCan · Canada, 1950 to 2026 · Oct 2026 · CC BY 4.0"))
 
     # 4 Expected vs actual -------------------------------------------------
     ry = [2023, 2024, 2025, 2026]
@@ -607,9 +610,9 @@ def build(s):
         head=f"Smoke reached {round(ex23 / 1e6)} million people",
         dek=f"Health Canada estimates {hc_asthma / 1e6:.1f} million days of asthma symptoms in children in 2023.",
         body=f'''
-<div class="note">Days of unhealthy smoke, May to September 2023</div>
+<div class="note">Days of unhealthy smoke, May to November 2023</div>
 {ov.smoke_season_map()[1]}
-<div class="chart" style="margin-top:6px">{ov.smoke_season_map(W=928)[0]}</div>
+<div class="chart" style="margin-top:6px;text-align:center">{ov.smoke_season_map(W=860)[0]}</div>
 <p class="foot">Reached: at least one day of unhealthy smoke in 2023.</p>''',
         source="NAPS and AirNow PM2.5; StatCan; Health Canada · 2023 · Oct 2026 · CC BY 4.0"))
 
@@ -671,10 +674,10 @@ def build(s):
     slides.append(dict(
         kicker="The cost",
         head=f"Fires cost Canada at least ${int(per_year)} billion a year",
-        dek="Firefighting is most of it, and in four big provinces it nearly doubled.",
+        dek="Firefighting is most of it, and in four provinces it nearly doubled after 2022.",
         body=f'''
 <div class="chart" style="text-align:center;margin-top:20px">{bill_svg}</div>''',
-        source="Government public accounts; StatCan; CIHI; Sentinel-2 · 2023 to 2026 · Oct 2026 · CC BY 4.0"))
+        source="Public accounts and budgets; StatCan; CIHI; Sentinel-2 · 2023 to 2026 · Oct 2026 · CC BY 4.0"))
 
     # 8 Environment --------------------------------------------------------
     cy = list(range(2016, 2025))
@@ -688,7 +691,7 @@ def build(s):
     slides.append(dict(
         kicker="The carbon",
         head=f"2023 fires: {round(ov.emissions_line()[1][1] / ov.emissions_line()[1][0] * 12)} months of Canada's emissions",
-        dek=f"That is {fint(ov.emissions_line()[1][1])} million tonnes of greenhouse gases, which Canada reports outside its official total.",
+        dek=f"That is {fint(ov.emissions_line()[1][1])} million tonnes of greenhouse gases, which Canada tracks outside its official total.",
         body=f'''
 <div class="note">Million tonnes of greenhouse gases each year</div>
 <div class="chart">{ov.emissions_line()[0]}</div>''',
@@ -708,9 +711,9 @@ def build(s):
         dek="They budget for mild fire seasons, fly old planes and borrow crews.",
         body=f'''
 {ov.circles_legend()}
-<div class="chart" style="margin-top:14px">{ov.budget_circles()}</div>
+<div class="chart" style="margin-top:14px">{ov.budget_circles(sub_dy=61)}</div>
 <div class="finds">{rows}</div>''',
-        source="Provincial budgets; auditor and review reports; CIFFC · 2023 to 2026 · Oct 2026 · CC BY 4.0"))
+        source="Provincial budgets and records; auditor and review reports · 2023 to 2026 · Oct 2026 · CC BY 4.0"))
 
     # Coming ---------------------------------------------------------------
     pol = ov.policy_numbers()
@@ -721,13 +724,13 @@ def build(s):
     slides.append(dict(
         kicker="On the way",
         head="Help is years away",
-        dek=f"Of ${j_set / 1000:.2f} billion in new federal wildfire money, at least ${j_paid:.0f} million was paid by March 2025.",
+        dek="New planes, crews and a fire-watching satellite are due from 2026 into the 2030s.",
         body=f'''
 <div class="chart" style="margin-top:18px">{ov.timeline()}</div>
 <div class="finds">
 <div class="find"><div class="fnum">{pol["n_grants"]}</div><div class="ftxt">research projects under way, from fuel mapping to Indigenous fire knowledge</div></div>
 </div>''',
-        source="CIFFC; federal budgets; GC InfoBase; provincial budgets · 2023 to 2026 · Oct 2026 · CC BY 4.0"))
+        source="CIFFC; federal budgets; GC InfoBase; provincial budgets · 2026 to 2031 · Oct 2026 · CC BY 4.0"))
 
     # 9 Bottom line --------------------------------------------------------
     slides.append(dict(
@@ -743,17 +746,17 @@ def build(s):
 <li>Fire budgets that match recent seasons</li>
 </ul>
 <div class="explore"><div class="ex1">Explore the full story and the data</div>
-<div class="ex2">Link in bio · sjvadrevu.github.io/canada-wildfires-2026</div></div>
+<div class="ex2">Link in bio · mediancanadian.ca</div></div>
 ''',
-        source="All data sources, methods and code: sjvadrevu.github.io/canada-wildfires-2026 · CC BY 4.0"))
+        source="All data sources, methods and code: mediancanadian.ca/canada-wildfires-2026 · CC BY 4.0"))
     slides.append(dict(
-        kicker="The Median Canadian · Week 2",
+        kicker=COVER_KICKER,
         head="From the forest to our homes",
         dek="Canada's wildfires, 2023 to 2026",
         body="", cover=True,
         source="NRCan; ECCC; CIHI; StatCan; government budgets · 2023 to 2026 · Oct 2026 · CC BY 4.0"))
     by = {sl["kicker"]: sl for sl in slides}
-    return [by[k] for k in ["The Median Canadian · Week 2", "The fires", "The heat and drought", "The smoke", "The cost",
+    return [by[k] for k in [COVER_KICKER, "The fires", "The heat and drought", "The smoke", "The cost",
                             "The carbon", "Readiness", "On the way", "What would help"]]
 
 
@@ -849,7 +852,7 @@ def page(slides):
         out.append(f'<div class="kicker">{esc(sl["kicker"])}</div><h1>{esc(sl["head"])}</h1>{dek}{card}</div>')
         if not sl.get("last"):
             out.append('<img class="footer-logo" src="logo-dark.png" alt="The Median Canadian">')
-        out.append(f'<div class="pagenum">{"Swipe to start →" if i == 1 else f"{i}/{N_SLIDES}"}</div>')
+        out.append(f'<div class="pagenum">{"Swipe to learn more →" if i == 1 else f"{i}/{N_SLIDES}"}</div>')
         if sl["source"]:
             out.append(f'<div class="source">{esc(sl["source"].replace(" · CC BY 4.0", " · Charts CC BY 4.0"))}</div>')
         out.append(f'<div class="credit">© {esc(CREDITS[i])}</div>')
@@ -863,34 +866,28 @@ for (const h of document.querySelectorAll('h1')) {
     return "".join(out)
 
 
-MEASURE = """(id) => {
-  const s = document.getElementById(id), top = s.getBoundingClientRect().top;
-  const c = s.querySelector('.content');
-  let bottom = 0, right = 0;
-  for (const e of c.querySelectorAll('*')) {
-    const r = e.getBoundingClientRect();
-    if (r.height === 0 && r.width === 0) continue;
-    bottom = Math.max(bottom, r.bottom - top); right = Math.max(right, r.right - s.getBoundingClientRect().left);
-  }
-  const logo = s.querySelector('.footer-logo'), pn = s.querySelector('.pagenum'), src = s.querySelector('.source');
-  const h = s.querySelector('h1');
-  return {
-    bottom, right,
-    logoTop: logo ? logo.getBoundingClientRect().top - top : null,
-    pageTop: pn.getBoundingClientRect().top - top,
-    logoLoaded: logo ? (logo.complete && logo.naturalWidth > 0) : true,
-    headLines: Math.round(h.getBoundingClientRect().height / parseFloat(getComputedStyle(h).lineHeight)),
-    headSize: getComputedStyle(h).fontSize,
-    srcOneLine: src ? (src.scrollWidth <= src.clientWidth + 1) : true,
-    srcTop: src ? src.getBoundingClientRect().top - top : null,
-    logoBottom: logo ? logo.getBoundingClientRect().bottom - top : null,
-  };
-}"""
+MEASURE = """(id) => { const s=document.getElementById(id), T=s.getBoundingClientRect().top, Lx=s.getBoundingClientRect().left;
+ let bottom=0,left=1e9,right=0; for (const e of s.querySelector('.content').querySelectorAll('*')) { const r=e.getBoundingClientRect();
+ if(!r.width&&!r.height) continue; bottom=Math.max(bottom,r.bottom-T); right=Math.max(right,r.right-Lx); left=Math.min(left,r.left-Lx);}
+ const ex=[...s.querySelectorAll('.footer-logo,.pagenum,.source,.credit')].map(e=>{const r=e.getBoundingClientRect();return [r.left-Lx,r.right-Lx]});
+ const logo=s.querySelector('.footer-logo'), pn=s.querySelector('.pagenum'), src=s.querySelector('.source'), h=s.querySelector('h1'), d=s.querySelector('.dek');
+ const lim=(logo||pn).getBoundingClientRect().top-T;
+ const lines=(el)=>el?Math.round(el.getBoundingClientRect().height/parseFloat(getComputedStyle(el).lineHeight)):0;
+ return {bottom,left,right,ex,lim, logoOk: logo?(logo.complete&&logo.naturalWidth>0):true,
+  srcOne: src?src.scrollWidth<=src.clientWidth+1:true, lines:lines(h), dekLines:lines(d),
+  clash:(()=>{const ts=[...s.querySelectorAll('svg text')].filter(t=>t.getAttribute('fill')!=='none' && t.textContent.trim());
+    const bx=ts.map(t=>({r:t.getBoundingClientRect(), s:t.textContent})); const out=[];
+    for(let i=0;i<bx.length;i++) for(let j=i+1;j<bx.length;j++){ const A=bx[i].r, B=bx[j].r, m=2;
+      if(bx[i].s===bx[j].s && Math.abs(A.left-B.left)<2 && Math.abs(A.top-B.top)<2) continue;
+      if(A.left<B.right+m && B.left<A.right+m && A.top<B.bottom+m && B.top<A.bottom+m) out.push(bx[i].s+' | '+bx[j].s); }
+    return out;})(),
+  svgOut:[...s.querySelectorAll('.content svg text')].filter(t=>{const r=t.getBoundingClientRect(); return r.width && (r.left-Lx<39 || r.right-Lx>1041);}).map(t=>t.textContent).slice(0,6)}; }"""
 
-BANNED = [r"\bnow\b", r"\btoday\b", r"\bcurrently\b", "\u2014"]
+BANNED = [r"\bnow\b", r"\btoday\b", r"\bcurrently\b", "\u2014", r"\bour (analysis|estimate|count)\b", r", not ", r"\bwe will\b", r"Swipe to start"]
 
 
 def main():
+    from PIL import Image
     s = series()
     warns = consistency(s)
     slides = build(s)
@@ -903,6 +900,8 @@ def main():
         for m in re.finditer(pat, visible):
             warns.append(f"banned text {pat!r}: ...{visible[max(0, m.start() - 40):m.end() + 40]}...")
 
+    final = os.path.join(HERE, "final")
+    os.makedirs(os.path.join(final, "jpg"), exist_ok=True)
     os.environ.setdefault("PLAYWRIGHT_BROWSERS_PATH", "/opt/pw-browsers")
     from playwright.sync_api import sync_playwright
     report, ok = [], True
@@ -913,31 +912,33 @@ def main():
         pg.wait_for_load_state("load"); pg.wait_for_timeout(1500)
         for i in range(1, len(slides) + 1):
             m = pg.evaluate(MEASURE, f"s{i}")
-            limit = m["logoTop"] if m["logoTop"] is not None else m["pageTop"]
-            gap = limit - m["bottom"]
-            issues = []
-            if gap < 18:
-                issues.append(f"content too close to footer (gap {gap:.0f}px)")
-            if m["right"] > 1080 - 40 + 1:
-                issues.append(f"content wider than margin (right {m['right']:.0f})")
-            if not m["srcOneLine"]:
-                issues.append("source line wraps or clips")
-            if not m["logoLoaded"]:
-                issues.append("logo not loaded")
-            if m["srcTop"] is not None and m["logoBottom"] is not None and m["srcTop"] < m["logoBottom"]:
-                issues.append("source line overlaps logo")
-            ok &= not issues
-            report.append(f"slide {i}: content bottom {m['bottom']:.0f}, footer top {limit:.0f}, gap {gap:.0f}px, "
-                          f"heading {m['headLines']} lines at {m['headSize']}" + (f"  !! {'; '.join(issues)}" if issues else "  ok"))
-            pg.locator(f"#s{i}").screenshot(path=os.path.join(HERE, f"merge-preview/slide-{i}.png"))
+            gap = m["lim"] - m["bottom"]
+            iss = []
+            if gap < 18: iss.append(f"gap {gap:.0f}px to footer")
+            if m["right"] > 1041 or m["left"] < 39: iss.append(f"content outside the margins ({m['left']:.0f} to {m['right']:.0f})")
+            if m["svgOut"]: iss.append("chart labels outside the margins: " + "; ".join(m["svgOut"]))
+            if not m["srcOne"]: iss.append("source line wraps or clips")
+            if not m["logoOk"]: iss.append("logo missing")
+            if m["lines"] > 2: iss.append(f"headline runs {m['lines']} lines")
+            if m["dekLines"] > 2: iss.append(f"line under the headline runs {m['dekLines']} lines")
+            if m["clash"]: iss.append("labels touch: " + "; ".join(m["clash"][:4]))
+            ok &= not iss
+            report.append(f"slide {i}: bottom {m['bottom']:.0f}, footer {m['lim']:.0f}, gap {gap:.0f}, heading {m['lines']} lines, line {m['dekLines']}"
+                          + (f"  !! {'; '.join(iss)}" if iss else "  ok"))
+            png = os.path.join(final, f"the-median-canadian-wildfires-{i}-of-{N_SLIDES}.png")
+            pg.locator(f"#s{i}").screenshot(path=png)
+            Image.open(png).convert("RGB").save(os.path.join(final, "jpg", f"wildfires-slide-{i}-of-{N_SLIDES}.jpg"), quality=92)
         b.close()
+    ims = [Image.open(os.path.join(final, "jpg", f"wildfires-slide-{i}-of-{N_SLIDES}.jpg")) for i in range(1, N_SLIDES + 1)]
+    tw, th = 360, 450
+    sheet = Image.new("RGB", (tw * 3 + 40, th * 3 + 40), "white")
+    for k, im in enumerate(ims):
+        sheet.paste(im.resize((tw, th)), (10 + (k % 3) * (tw + 10), 10 + (k // 3) * (th + 10)))
+    sheet.save(os.path.join(final, "jpg", f"wildfires-all-{N_SLIDES}-slides.jpg"), quality=90)
 
     nver = sum(1 for v in NUM_SOURCE.values() if v == "verified")
     print(f"numbers: {nver} of {len(NUM)} from verified_numbers.json" if os.path.exists(VERIFIED)
           else "numbers: verified_numbers.json not found, using draft readings")
-    missing = [k for k, v in NUM_SOURCE.items() if v == "draft"]
-    if os.path.exists(VERIFIED) and missing:
-        print("  not in verified file (draft value kept):", ", ".join(missing))
     print("\n".join(report))
     for w in warns:
         print("WARNING:", w)

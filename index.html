@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noai, noimageai">
 <title>Canada's Wildfires 2023 to 2026</title>
 <link rel="icon" type="image/png" href="logo-icon.png">
 <meta name="description" content="Canada's wildfires, 2023 to 2026: follow the fires from the forest to our cities, the bill, and the next fire season.">
@@ -46,6 +47,7 @@ a{color:var(--accent)}
 .top{display:flex;gap:12px;align-items:flex-end;justify-content:space-between;flex-wrap:wrap}
 .brandrow{margin-bottom:8px}
 .brandrow img{display:block;height:46px;width:auto;margin-left:-10px}
+.brandrow a{display:inline-block}
 .dek{font-size:1rem;margin:8px 0 0;max-width:640px;line-height:1.45}
 .stamp{font-size:.78rem;color:var(--muted)}
 .stamp b{color:var(--text);font-weight:600}
@@ -410,8 +412,8 @@ details.how2 p{font-size:.84rem;line-height:1.5;margin:8px 0 0}
 <main>
   <header class="top">
     <div>
-      <div class="brandrow"><picture><source srcset="logo-dark.png" media="(prefers-color-scheme: dark)"><img src="logo.png" alt="The Median Canadian" width="1536" height="491"></picture></div>
-      <span class="tag">The Median Canadian · Week 2</span>
+      <div class="brandrow"><a href="https://mediancanadian.ca/"><picture><source srcset="logo-dark.png" media="(prefers-color-scheme: dark)"><img src="logo.png" alt="The Median Canadian" width="1536" height="491"></picture></a></div>
+      <span class="tag">The Median Canadian · Week 3 · October 29, 2026</span>
       <h1>From the forest to our homes</h1>
       <p class="dek">Canada's wildfires, 2023 to 2026</p>
     </div>
@@ -502,8 +504,8 @@ details.how2 p{font-size:.84rem;line-height:1.5;margin:8px 0 0}
         <div class="xcard" id="smCard" hidden></div>
         <div class="chart" id="chReach"></div>
         <div class="hct" id="hcTable"></div>
-        <p class="fnote">Unhealthy smoke: a day with fine particles above 27 micrograms per cubic metre at a monitor within 50 km.<sup class="cite" data-cite="caaqs,naps,airnow"></sup> Health Canada's estimates cover wildfire smoke from May to September 2023, from its Air Quality Benefits Assessment Tool; ranges are 95% intervals.<sup class="cite" data-cite="matz2026,aqbat"></sup> A study of Ontario by Health Canada and partners found asthma emergency visits rose after the June 2023 smoke.<sup class="cite" data-cite="chen2025-cmaj"></sup></p>
-        <p class="fnote">Monthly hospital records hint at more emergency visits in smoky months, but the signal is weak (one of six tests), so it is not used.<sup class="cite" data-cite="cihi-nacrs"></sup></p>
+        <p class="fnote">Unhealthy smoke: a day with fine particles above 27 micrograms per cubic metre at a monitor within 50 km, counted from May 1 to November 30 (2026 runs to October 19).<sup class="cite" data-cite="caaqs,naps,airnow"></sup> Health Canada's estimates cover wildfire smoke from May to September 2023, from its Air Quality Benefits Assessment Tool; ranges are 95% intervals.<sup class="cite" data-cite="matz2026,aqbat"></sup> A study of Ontario by Health Canada and partners found asthma emergency visits rose after the June 2023 smoke.<sup class="cite" data-cite="chen2025-cmaj"></sup></p>
+        <p class="fnote">Monthly hospital records for May to September hint at more emergency visits in smoky months, but the signal is weak (one of six tests), so it is not used.<sup class="cite" data-cite="cihi-nacrs"></sup></p>
         <div class="sub">
           <h3>People on reserves were <span data-n="C21.ratio" data-f="x0"></span> as likely as other Canadians to live near large fires year after year</h3>
           <div class="chart" id="chReserve"></div>
@@ -611,7 +613,7 @@ details.how2 p{font-size:.84rem;line-height:1.5;margin:8px 0 0}
     <div class="story2">
       <article class="ch" id="c7"><span class="chN">7</span><span class="chK">On the way</span>
         <h2 class="chH">Help is years away</h2>
-        <p class="reveal">Of $<span data-n="@c7.set_total_m" data-f="b100"></span> billion in new federal wildfire money, at least $<span data-n="@c7.paid_total_m" data-f="int"></span> million was paid by March 2025.<sup class="cite" data-cite="fed-budgets,gc-infobase,nrcan-programs"></sup></p>
+        <p class="reveal">New planes, crews and a fire-watching satellite are due from 2026 into the 2030s. Of $<span data-n="@c7.started_set_m" data-f="int"></span> million for the two federal programs that began in 2022 and 2023, at least $<span data-n="@c7.started_paid_m" data-f="int"></span> million was paid by March 2025.<sup class="cite" data-cite="fed-budgets,gc-infobase,nrcan-programs"></sup></p>
         <ol class="tl" id="timeline"></ol>
         <div class="kf">
           <div><b data-n="@c7.intl_2023" data-f="int"></b><span>firefighters and staff came from other countries to help in 2023<sup class="cite" data-cite="ciffc-reports"></sup></span></div>
@@ -661,7 +663,7 @@ details.how2 p{font-size:.84rem;line-height:1.5;margin:8px 0 0}
         <li>Costs and losses: provincial public accounts, Crown timber prices, Sentinel-2 imagery, Microsoft building footprints, official damage counts, census home values.<sup class="cite" data-cite="bcws-cost,bc-budget,on-pa,ab-ar,sk-auditor,cpi,nfd-revenue,sentinel2,msbuildings,jasper-damage,summerland,census-profile"></sup></li>
       </ul>
       <h3>In plain words</h3>
-      <p>Every number on this page is computed from the raw public data by the scripts in the <a href="https://github.com/sjvadrevu/canada-wildfires-2026">GitHub repository</a>, which also holds the full method (METHODOLOGY.md). Fire outlines from 1972 to 2026 were laid over a map of Canada's forest. Warming and drought come from long-running weather stations. Smoke comes from daily air monitor readings near where people live. Budgets, aircraft, crews and reviews come from each government's own documents; news stories were used only to find those documents.</p>
+      <p>Every number on this page is computed from the raw public data by the scripts in the <a href="https://github.com/mediancanadian/canada-wildfires-2026">GitHub repository</a>, which also holds the full method (METHODOLOGY.md). Fire outlines from 1972 to 2026 were laid over a map of Canada's forest. Warming and drought come from long-running weather stations. Smoke comes from daily air monitor readings near where people live. Budgets, aircraft, crews and reviews come from each government's own documents; news stories were used only to find those documents.</p>
       <h3>Are all the big fires here?</h3>
       <p><span data-n="@coverage.n_checked" data-f="int"></span> major fires reported in the news from 2023 to 2026 were checked against the fire outlines; <span data-n="@coverage.n_in" data-f="int"></span> are in the data, including Thunder Bay's largest 2026 fire.<sup class="cite" data-cite="coverage-check"></sup></p>
       <ul>
@@ -674,7 +676,7 @@ details.how2 p{font-size:.84rem;line-height:1.5;margin:8px 0 0}
       <h3>Caveats</h3>
       <ul>
         <li><b>2026 outlines</b> are drawn around satellite heat detections and include unburned patches; hectares for 2026 are scaled to official totals province by province.</li>
-        <li><b>Smoke and health</b> numbers are Health Canada's estimates for 2023; Health Canada has not published estimates for 2024 to 2026.</li>
+        <li><b>Smoke and health</b> numbers are Health Canada's estimates for May to September 2023; Health Canada has not published estimates for 2024 to 2026.</li>
         <li><b>The cost</b> counts only costs with a public record, estimates at their low end. The list under "How the costs were counted" names what is still missing.</li>
         <li><b>The share of land burned linked to the heat</b> compares hotter and cooler years within each area. It is a statistical estimate, not proof of cause.</li>
         <li><b>Budget cover</b> compares a 2026-27 budget with what was spent in three recent years. Budget bases differ by province, as noted on each card.</li>
@@ -688,7 +690,7 @@ details.how2 p{font-size:.84rem;line-height:1.5;margin:8px 0 0}
     </div>
   </section>
 
-  <div class="foot">Sources: Natural Resources Canada, Environment and Climate Change Canada, Statistics Canada, Agriculture and Agri-Food Canada, the Canadian Institute for Health Information, federal, provincial and territorial governments, fire agencies and others, listed in the <a href="#references">References</a>. Every number is computed from the raw public data; methods and code are on <a href="https://github.com/sjvadrevu/canada-wildfires-2026">GitHub</a>.<div class="sig2"><img src="logo-icon.png" alt="" width="627" height="618"><span><b>The Median Canadian</b> · A curious Canadian explaining Canada through numbers, every week.</span></div><div style="margin-top:6px">Text, charts and images: <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, share and adapt with credit. Code: <a href="https://github.com/sjvadrevu/canada-wildfires-2026/blob/main/LICENSE" target="_blank" rel="noopener">Apache 2.0</a>. Data belongs to its publishers, each under its own licence.</div></div>
+  <div class="foot">Sources: Natural Resources Canada, Environment and Climate Change Canada, Statistics Canada, Agriculture and Agri-Food Canada, the Canadian Institute for Health Information, federal, provincial and territorial governments, fire agencies and others, listed in the <a href="#references">References</a>. Every number is computed from the raw public data; methods and code are on <a href="https://github.com/mediancanadian/canada-wildfires-2026">GitHub</a>.<div class="sig2"><img src="logo-icon.png" alt="" width="627" height="618"><span><b>The Median Canadian</b> · A curious Canadian explaining Canada through numbers, every week. <a href="https://mediancanadian.ca/">All posts</a></span></div><div style="margin-top:6px">Text, charts and images: <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>, share and adapt with credit. Code: <a href="https://github.com/mediancanadian/canada-wildfires-2026/blob/main/LICENSE" target="_blank" rel="noopener">Apache 2.0</a>. Data belongs to its publishers, each under its own licence.</div></div>
 </main>
 
 <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
@@ -891,7 +893,7 @@ function drawCharts() {
   // 3. smoke reach and Health Canada estimates
   const rb = CH.c3.reached_by_year;
   vbars($("#chReach"), rb.map(([k, v]) => ({k, v: v / 1e6, hl: k >= 2023, cls: k >= 2023 ? "hot" : "m", title: `${k}: ${nf(v / 1e6, 1)} million people`})),
-    {cite: "naps,airnow,statcan-da", title: "Canadians with at least one day of unhealthy smoke, May to September, millions (tap a bar to map that year)", tick: t => nf(t, 0), h: 170, xlab: k => "'" + String(k).slice(2)});
+    {cite: "naps,airnow,statcan-da", title: "Canadians with at least one day of unhealthy smoke, May to November, millions (tap a bar to map that year)", tick: t => nf(t, 0), h: 170, xlab: k => "'" + String(k).slice(2)});
   hcTable();
   const r = C.C21 || {};
   hrows($("#chReserve"), [{label: "On reserve", hl: true, bars: [{v: r.on_reserve_pct, fill: "var(--fire)"}], text: F.pct1(r.on_reserve_pct)},
@@ -976,9 +978,9 @@ async function smokeMap() {
   const reach = (CH.c3.reached_by_year.find(r => String(r[0]) === SM.year) || [0, null])[1];
   $("#smBar").innerHTML = `<div class="seg" id="smSeg">${yrs.map(y => `<button type="button" data-y="${y}" class="${y === SM.year ? "on" : ""}">${y}</button>`).join("")}</div>
     <span class="xnote">${reach != null ? `<b>${SM.year}: ${nf(reach / 1e6, 1)} million people</b> had at least one day of unhealthy smoke. ` : ""}Tap a dot to see that place in every year.</span>`;
-  el.innerHTML = `<div class="ttl">Days of unhealthy smoke, May to September ${SM.year}${citeHTML("naps,airnow,caaqs")}</div>
+  el.innerHTML = `<div class="ttl">Days of unhealthy smoke, May to November ${SM.year}${citeHTML("naps,airnow,caaqs")}</div>
     <div class="lg">${[...bands].reverse().map(b => sw(b[1], b[2], "border-radius:50%")).join("")}</div>
-    <svg viewBox="0 ${y0} ${W} ${(H - y0).toFixed(0)}" role="img" aria-label="Map of air monitors coloured by days of unhealthy smoke, May to September ${SM.year}">
+    <svg viewBox="0 ${y0} ${W} ${(H - y0).toFixed(0)}" role="img" aria-label="Map of air monitors coloured by days of unhealthy smoke, May to November ${SM.year}">
     <g class="provs">${SM.provs}</g>
     ${idx.map(i => { const s = c.stations[i]; return `<circle class="${i === SM.sel ? "on" : ""}" data-i="${i}" cx="${s[0]}" cy="${s[1]}" r="${D[i] ? r0 + 1 : r0}" fill="${col(D[i])}" stroke="var(--panel)" stroke-width="1"><title>${esc(s[2] || "Air monitor")}: ${D[i]} ${D[i] === 1 ? "day" : "days"}</title></circle>`; }).join("")}
     </svg>`;
@@ -987,7 +989,7 @@ async function smokeMap() {
   if (SM.sel == null) { card.hidden = true; return; }
   const s = c.stations[SM.sel], here = D[SM.sel];
   card.hidden = false;
-  card.innerHTML = `<b>${esc(s[2] || "Air monitor")}${s[3] ? ", " + esc(s[3]) : ""}</b>: ${here == null ? "no data" : `${here} ${here === 1 ? "day" : "days"} of unhealthy smoke`} in May to September ${SM.year}.
+  card.innerHTML = `<b>${esc(s[2] || "Air monitor")}${s[3] ? ", " + esc(s[3]) : ""}</b>: ${here == null ? "no data" : `${here} ${here === 1 ? "day" : "days"} of unhealthy smoke`} in May to November ${SM.year}.
     <div class="yrs">${yrs.map(y => `<span class="${y === SM.year ? "on" : ""}">${y}: ${c.days[y][SM.sel] == null ? "no data" : c.days[y][SM.sel]}</span>`).join("")}</div>`;
 }
 function initSmokeMap() {
