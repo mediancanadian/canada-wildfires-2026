@@ -1,0 +1,47 @@
+{
+ "cover": {
+  "kicker": "The Median Canadian · Week 3 · October 29, 2026",
+  "headline": "From the forest to our homes",
+  "line": "Canada's wildfires, 2023 to 2026"
+ },
+ "order": [
+  "c1",
+  "c2",
+  "c3",
+  "c4",
+  "c5",
+  "c6",
+  "c7",
+  "c8"
+ ],
+ "kickers": {
+  "c1": "The fires",
+  "c2": "The heat and drought",
+  "c3": "The smoke",
+  "c4": "The cost",
+  "c5": "The carbon",
+  "c6": "Readiness",
+  "c7": "On the way",
+  "c8": "What would help"
+ },
+ "headlines": {
+  "c1": "35.9 million hectares burned",
+  "c2": "Hotter, drier summers",
+  "c3": "Smoke reached 32 million people",
+  "c4": "Fires cost Canada at least $3 billion a year",
+  "c5": "2023 fires: 15 months of Canada's emissions",
+  "c6": "Provinces are not ready for seasons like these",
+  "c7": "Help is years away",
+  "c8": "Catch fires while they are small"
+ },
+ "lines": {
+  "c1": "About the size of Germany, and more than double any four years since 1990.",
+  "c2": "Summers ran 1.5°C above 1961 to 1990, and warming is linked to 1 in 3 hectares burned.",
+  "c3": "Health Canada estimates 1.1 million days of asthma symptoms in children in 2023.",
+  "c4": "Firefighting is most of it, and in four provinces it nearly doubled after 2022.",
+  "c5": "That is 870 million tonnes of greenhouse gases, which Canada tracks outside its official total.",
+  "c6": "They budget for mild fire seasons, fly old planes and borrow crews.",
+  "c7": "New planes, crews and a fire-watching satellite are due from 2026 into the 2030s.",
+  "c8": "In 2026, 7 in 10 hectares burned in fires that grew past 1,000 hectares within three days."
+ }
+}

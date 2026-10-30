@@ -891,6 +891,15 @@ def main():
     s = series()
     warns = consistency(s)
     slides = build(s)
+    # the slides' own words for the hub and anyone reusing them (chapter c1 is slide 2, the cover is separate)
+    order = [f"c{i}" for i in range(1, len(slides))]
+    plain = lambda t: html.unescape(re.sub(r"<[^>]+>", "", t or "")).replace("\u00a0", " ").strip()
+    json.dump({"cover": {"kicker": slides[0]["kicker"], "headline": slides[0]["head"], "line": plain(slides[0].get("dek"))},
+               "order": order,
+               "kickers": {k: sl["kicker"] for k, sl in zip(order, slides[1:])},
+               "headlines": {k: plain(sl["head"]) for k, sl in zip(order, slides[1:])},
+               "lines": {k: plain(sl.get("dek")) for k, sl in zip(order, slides[1:])}},
+              open(os.path.join(BASE, "data", "slide_text.json"), "w"), indent=1, ensure_ascii=False)
     html_text = page(slides)
     out_html = os.path.join(HERE, "slides_merge.html")
     open(out_html, "w").write(html_text)

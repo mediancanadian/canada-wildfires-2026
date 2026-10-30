@@ -73,7 +73,7 @@ STORY = {"story/claims_draft.md": "story/claims_draft.md",
          "story/verification.md": "methods/verification.md"}
 SLIDES = ["slides/make_slides.py", "slides/make_slides_photo.py", "slides/make_slides_merge.py",
           "slides/option_visuals.py", "slides/canmap.py"]
-SITE_BUILD = ["site-build/fma_union_2023_2026.csv"]
+SITE_BUILD = ["site-build/fma_union_2023_2026.csv", "data/slide_text.json"]  # plus the slides' own words, written by slides/make_slides_merge.py
 SHARED_DOCS = ["analysis/REBUILD.md"]
 # Snapshots of live official feeds (NRCan CIFFC/CWFIS API, NFD tables, SOPFEU points) that the cause and forest
 # scripts read from season/. A live API cannot return the same snapshot later, so these are kept as dated copies.
