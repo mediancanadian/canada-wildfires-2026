@@ -97,3 +97,13 @@ An independent reader checked every number on the nine slides, the page's chapte
 - The per-monitor smoke-day counts behind the slide 4 map counted two readings of the same day at many monitors; one reading per monitor and day is kept now (METHODOLOGY.md section 5.9). Slide 4 was rebuilt.
 - The cost floor after these fixes, $12.63 B (at least $3 billion a year), was recomputed by the scripts and has not had a second independent read.
 
+
+## Third check: the Week 3 slides (2026-10-29)
+
+An independent check on 2026-10-29 read the nine slides, the post text and the analysis files after the move to mediancanadian.ca and the change of the smoke-day window to May 1 to November 30. It confirmed the cost floor ($12.63 B, at least $3 billion a year), the receipt lines adding to $12.6 B, 15.2 months of emissions, the budget percentages, 70 years, 4,231, $124 M, 53 projects and the 74.8% behind "7 in 10", and that 32.02 million people are the same count for May to September and for all of 2023. Fixed before publishing:
+- Slide 3: "linked to that heat" pointed at the 1.5 °C of 2023 to 2026, while the 1 in 3 comes from the measured warming (1.15 °C); the line says "warming is linked to 1 in 3 hectares burned". "Driest four fire seasons" became "the driest run of four fire seasons" (2026 alone ranks 18th of 77). An axis label hidden by a circle is drawn on top.
+- Slide 4: the map was cropped at 61.5° N and hid Yellowknife (73 days in 2023), Norman Wells, Inuvik and Whitehorse, and cut dots at the edges; the whole country is shown.
+- Slide 5: "in four big provinces it nearly doubled" became "in four provinces it nearly doubled after 2022" (the baseline is 2016 to 2021; Quebec is not one of the four).
+- Slide 6: "reports outside its official total" became "tracks outside its official total", the inventory's own wording ("tracked but not reported").
+- Slide 8: "Of $1.02 billion ..., at least $124 million was paid by March 2025" counted a $257.6 M aircraft lease that starts in April 2026. The slide states the timeline instead; the page compares the $124 M with the $592 M of the two programs that began in 2022 and 2023. The 2031 water bombers are first deliveries ("From 2031").
+- Slide 2: a label sat on Thunder Bay's dot; source lines name CIFFC (slide 2), NRCan (slide 3), budgets (slide 5) and drop CIFFC from slide 7.
