@@ -1,6 +1,6 @@
 # Canada's wildfires, 2023 to 2026
 
-The Median Canadian · Week 3 · October 29, 2026: an interactive page on Canada's four record fire seasons, built from raw public data.
+The Median Canadian · Week 3 · October 30, 2026: an interactive page on Canada's wildfires from 2023 to 2026, built from raw public data.
 Published with GitHub Pages at https://mediancanadian.ca/canada-wildfires-2026/
 
 Everything behind the page is here: every analysis script, every output table, the independent check of every published number, and the steps to rebuild it from the official sources. Nothing is hidden, so anyone can reproduce or challenge any number.

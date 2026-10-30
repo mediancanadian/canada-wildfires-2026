@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Week 3 carousel, October 29, 2026: Canada's wildfires, 2023 to 2026 (The Median Canadian).
+"""Week 3 carousel, October 30, 2026: Canada's wildfires, 2023 to 2026 (The Median Canadian).
 
 One command rebuilds everything:
     python3 make_slides.py
@@ -24,7 +24,7 @@ BASE = os.path.abspath(os.path.join(HERE, ".."))
 AN = os.path.join(BASE, "analysis")
 VERIFIED = os.path.join(BASE, "story", "verified_numbers.json")
 N_SLIDES = 9
-COVER_KICKER = "The Median Canadian · Week 3 · October 29, 2026"  # week it goes out in, plus its date
+COVER_KICKER = "The Median Canadian · Week 3 · October 30, 2026"  # week it goes out in, plus its date
 # receipt lines on the bill slide (keys of bill_summary.json "slide"); the site uses the same labels
 BILL_LINES = [("fight", "Firefighting, 2023 to 2025"), ("fight26", "Firefighting, 2026 estimates"),
               ("build", "Homes, buildings and repairs"), ("evac", "Evacuations and hospital care"),
